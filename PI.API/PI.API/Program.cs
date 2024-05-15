@@ -6,6 +6,7 @@ using PI.Core.DataContext;
 using PI.Core.Services;
 using PI.Domain;
 using PI.Domain.Interfaces;
+using PI.Domain.Services;
 using System.Text.Json.Serialization;
 
 
@@ -34,6 +35,8 @@ builder.Services.AddDbContext<AutoCompManagerContext>(options =>
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ISquadService, SquadService>();
+builder.Services.AddScoped<ISpeedService, SpeedService>();
+builder.Services.AddScoped<ITractionService, TractionService>();
 
 var app = builder.Build();
 

@@ -1,0 +1,25 @@
+<div class="row m-1 mt-2" *ngIf="squads">
+    <div *ngFor="let squad of squads" class="col-md-4">
+        <mat-card class="mt-1" (click)="openExam(squad.id)">
+            <mat-card-header>
+              <mat-card-title>{{squad.name}}</mat-card-title>
+              <mat-card-subtitle>N° {{squad.carNumber}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div class="mt-2">
+                    <mat-chip-listbox aria-label="student selection">
+                        <mat-chip *ngFor="let student of squad.student">
+                          <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Photo of a Shiba Inu"/>
+                            {{student.name}}
+                        </mat-chip>
+                      </mat-chip-listbox>
+                </div>            
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <button mat-button color="warn">Deletar</button>
+              </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

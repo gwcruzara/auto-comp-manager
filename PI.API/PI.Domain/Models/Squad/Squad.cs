@@ -4,9 +4,9 @@
     {
         public string Name { get; set; }
         public string CarNumber { get; set; }
-        public IList<Ramp> Ramp { get; set; }
-        public IList<Speed> Speed { get; set; }
-        public IList<Traction> Traction { get; set; }
-        public IList<Student> Student { get; set; }
+        public List<Ramp>? Ramp { get; set; }
+        public List<Speed>? Speed { get; set; }
+        public List<Traction>? Traction { get; set; }
+        public List<Student>? Student { get; set; }
     }
 }

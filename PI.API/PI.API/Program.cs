@@ -34,6 +34,7 @@ builder.Services.AddDbContext<AutoCompManagerContext>(options =>
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ISquadService, SquadService>();
+builder.Services.AddScoped<IRampService, RampService>();
 
 var app = builder.Build();
 

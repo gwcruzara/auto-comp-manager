@@ -13,20 +13,21 @@ namespace PI.Core.Mapping
             builder.HasKey(t => new { t.Id });
 
             builder.Property(x => x.Distance)                   
-                   .IsRequired();
+                   .IsRequired(true);
 
             builder.Property(x => x.Ranking)
-                   .IsRequired();
+                   .IsRequired(true);
 
             builder.Property(x => x.Score)
-                   .IsRequired();
+                   .IsRequired(true);
 
             builder.Property(x => x.IdSquad)
-                   .IsRequired();
+                   .IsRequired(true);
 
             builder.HasOne(x => x.Squad)
                    .WithMany(x => x.Ramp)
-                   .HasForeignKey(x => x.IdSquad);
+                   .HasForeignKey(x => x.IdSquad)
+                   .IsRequired(false);
         }
     }
 }

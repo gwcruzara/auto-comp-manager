@@ -1,0 +1,22 @@
+<form [formGroup]="mainForm" class="remove-overflow">
+    <div class="row m-1 mt-3">
+        <mat-form-field class="col-md-4" appearance="outline" >
+            <mat-label>Distância Percorrida</mat-label>
+            <input matInput formControlName="distance">
+          </mat-form-field>
+
+        <mat-form-field class="col-md-4" appearance="outline" >
+            <mat-label>Colocação</mat-label>
+            <input matInput formControlName="ranking">
+          </mat-form-field>
+
+        <mat-form-field class="col-md-4" appearance="outline" >
+            <mat-label>Pontuação</mat-label>
+            <input matInput formControlName="score">
+        </mat-form-field>
+    </div>
+
+    <div class="d-flex flex-row-reverse">
+        <button mat-flat-button (click)="saveRamp()">Salvar</button>
+    </div>
+</form>

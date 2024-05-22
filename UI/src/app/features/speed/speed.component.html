@@ -1,0 +1,27 @@
+<form [formGroup]="speedForm" class="remove-overflow">
+    <div class="row m-1 mt-3">
+        <mat-form-field class="col" appearance="outline" >
+            <mat-label>Tempo</mat-label>
+            <input matInput formControlName="time">
+        </mat-form-field>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div>
+                <strong>Ranking:</strong> {{getRank()}}
+            </div>
+            <div>
+                <strong>Nota da Equipe:</strong> {{getScore()}}
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <mat-checkbox class="col-md-4" formControlName="burnedStart">Queima de Largada</mat-checkbox>
+            <mat-checkbox class="col-md-4" formControlName="cutWay">Cortar Caminho</mat-checkbox>
+            <mat-checkbox class="col-md-4" formControlName="outsideLine">Fora da Faixa</mat-checkbox>
+        </div>
+  
+    </div>
+    
+
+</form>

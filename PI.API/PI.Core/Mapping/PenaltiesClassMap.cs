@@ -18,8 +18,7 @@ namespace PI.Core.Mapping
             builder.Property(x => x.Time)
                    .IsRequired();
 
-            builder.Property(x => x.IdSpeed)
-                   .IsRequired();
+            builder.Property(x => x.IdSpeed);                   
 
             builder.HasOne(x => x.Speed)
                     .WithMany(x => x.Penalties)

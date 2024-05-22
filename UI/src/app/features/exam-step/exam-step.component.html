@@ -1,16 +1,56 @@
-<div class="m-3 mt-2">
-    <mat-card>
-        <mat-tab-group>
-            <mat-tab label="Rampa">
-                <app-ramp></app-ramp>
-            </mat-tab>
-            <mat-tab label="Velocidade">
-            </mat-tab>
-            <mat-tab label="Tração">
-                
-            </mat-tab>
-        </mat-tab-group>
+<div class="d-flex flex-row justify-content-center mt-2 m-1">
+    <mat-card class="me-3 ramp-card">
+        <mat-card-header>
+            <mat-card-title>
+                Rampa
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content>
+            <app-ramp [entity]="entity.ramp" [id]="id" [rampForm]="rampForm"></app-ramp>
+        </mat-card-content>
+
+        <div class="d-flex flex-row justify-content-end m-1">
+            <button mat-stroked-button (click)="saveRamp()">Salvar</button>
+        </div>
     </mat-card>
 
+    <mat-card class="me-3 traction-card">
+        <mat-card-header>
+            <mat-card-title>
+                Tração
+            </mat-card-title>
+        </mat-card-header>
+        
+        <mat-divider></mat-divider>
+
+        <mat-card-content>
+            <app-traction [entity]="entity.traction" [id]="id" [tractionForm]="tractionForm"></app-traction>
+        </mat-card-content>
+
+        <div class="d-flex flex-row justify-content-end m-1">
+            <button mat-stroked-button (click)="saveTraction()">Salvar</button>
+        </div>
+    </mat-card>
+
+    <mat-card class="me-3 speed-card">
+        <mat-card-header>
+            <mat-card-title>
+                Velocidade
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content>
+            <app-speed [entity]="entity.speed" [id]="id" [speedForm]="speedForm"></app-speed>
+        </mat-card-content>
+
+        <div class="d-flex flex-row justify-content-end m-1">
+            <button mat-stroked-button (click)="saveSpeed()">Salvar</button>
+        </div>
+    </mat-card>
 </div>
 

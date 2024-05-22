@@ -20,6 +20,15 @@ namespace PI.Core.Mapping
 
             builder.Property(x => x.Score)
                    .IsRequired();
+            
+            builder.Property(x => x.BurnedStart)
+                   .IsRequired();
+            
+            builder.Property(x => x.OutsideLine)
+                   .IsRequired();
+            
+            builder.Property(x => x.CutWay)
+                   .IsRequired();
 
             builder.Property(x => x.IdSquad)
                    .IsRequired();

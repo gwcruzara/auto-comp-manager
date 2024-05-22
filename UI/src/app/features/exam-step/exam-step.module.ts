@@ -6,6 +6,8 @@ import { ExamStepComponent } from './exam-step.component';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RampModule } from '../ramp/ramp.module';
+import { SpeedModule } from '../speed/speed.module';
+import { TractionModule } from '../traction/traction.module';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { RampModule } from '../ramp/ramp.module';
     ExamStepRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    RampModule
+    RampModule,
+    SpeedModule,
+    TractionModule
   ]
 })
 export class ExamStepModule { }

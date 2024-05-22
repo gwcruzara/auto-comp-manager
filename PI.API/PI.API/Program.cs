@@ -1,13 +1,8 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using PI.Core.DataContext;
 using PI.Core.Services;
-using PI.Domain;
 using PI.Domain.Interfaces;
 using PI.Domain.Services;
-using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +13,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddSpaStaticFiles(directory =>
 {
-    directory.RootPath = "PI-UI";
+    directory.RootPath = "UI";
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -38,6 +33,7 @@ builder.Services.AddScoped<ISquadService, SquadService>();
 builder.Services.AddScoped<ISpeedService, SpeedService>();
 builder.Services.AddScoped<ITractionService, TractionService>();
 builder.Services.AddScoped<IRampService, RampService>();
+builder.Services.AddScoped<IPenaltiesService, PenaltiesService>();
 
 var app = builder.Build();
 
@@ -56,7 +52,7 @@ app.UseSpaStaticFiles();
 
 app.UseSpa(spa =>
 {
-    spa.Options.SourcePath = Path.Combine(Directory.GetCurrentDirectory(), "PI-UI");
+    spa.Options.SourcePath = Path.Combine(Directory.GetCurrentDirectory(), "UI");
 });
 
 app.UseHttpsRedirection();

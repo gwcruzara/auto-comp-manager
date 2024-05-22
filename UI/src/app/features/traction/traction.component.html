@@ -1,0 +1,15 @@
+<form [formGroup]="tractionForm" class="remove-overflow">
+    <div class="row m-1 mt-3">
+        <mat-form-field class="col" appearance="outline" >
+            <mat-label>Peso</mat-label>
+            <input matInput formControlName="weight">
+        </mat-form-field>
+    </div>
+
+    <div>
+        <strong class="card-font-size">Ranking:</strong> {{getRank()}}
+    </div>
+    <div>
+        <strong class="card-font-size">Nota da Equipe:</strong> {{getScore()}}
+    </div>
+</form>

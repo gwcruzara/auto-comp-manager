@@ -2,3 +2,12 @@
     overflow-x: hidden;
     overflow-y: hidden !important;
 }
+
+.readonly {
+    cursor: not-allowed;
+
+    input {
+        opacity: 0.5 !important;
+        cursor: not-allowed;
+    }
+}

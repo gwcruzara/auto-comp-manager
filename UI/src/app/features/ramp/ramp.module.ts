@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { RampComponent } from './ramp.component';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     RampComponent

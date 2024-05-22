@@ -7,6 +7,9 @@ export class Speed extends BaseEntity {
     ranking: number = 0;
     score: number = 0;
     idSquad: number = 0;
+    burnedStart: boolean = false;
+    outsideLine: boolean = false;
+    cutWay: boolean = false;
     squad: Squad = new Squad();
     penalties: Penalties[] = [];
 }

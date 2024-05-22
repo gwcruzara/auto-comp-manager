@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SquadService } from './services/squad.service';
 import { Squad } from 'src/app/domain/squad/squad-model';
-import { MatAccordion } from '@angular/material/expansion';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-squad',
@@ -10,25 +10,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./squad.component.scss']
 })
 export class SquadComponent implements OnInit {
+  
+  private destroy$ = new Subject();  
 
-  squads: Squad[] = [];
+  private squadService = inject(SquadService);
+  private router = inject(Router);
 
-  @ViewChild(MatAccordion) accordion!: MatAccordion;
-
-
-  constructor(private readonly squadService: SquadService, private readonly router: Router){
-
-  }
+  public squads: Squad[] = [];
 
   ngOnInit(): void {
-    this.squadService.getSquads().subscribe(response => {
-      this.squads = response;
-      console.log(this.squads)
-    });
+    this.squadService.getSquads()
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+        this.squads = response;
+      });
   }
 
   openExam(id: number){
     this.router.navigate(['exam-step', id])
   }
-
 }

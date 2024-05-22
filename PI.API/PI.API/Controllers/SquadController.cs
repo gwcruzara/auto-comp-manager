@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PI.Domain.Interfaces;
 using PI.Domain.Models;
+using PI.Domain.Models.Prove;
 
 namespace PI.API.Controllers
 {
@@ -20,6 +21,21 @@ namespace PI.API.Controllers
         public Task<List<Squad>> GetSquadList()
         {
             return _squadService.GetSquadList();
+        }
+        
+        [HttpGet]
+        [Route("GetProve/{squadId}")]
+        public ProveDto GetProve(int squadId)
+        {
+            return _squadService.GetProve(squadId);
+        }     
+        
+
+        [HttpGet]
+        [Route("GetOverallRanking")]
+        public IQueryable<RankingDto> GetOverallRanking()
+        {
+            return _squadService.GetRankingList();
         }
     }
 }

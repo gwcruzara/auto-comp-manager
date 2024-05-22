@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PI.Domain.Models;
 using PI.Domain.Services;
 
 namespace PI.API.Controllers
@@ -12,6 +13,13 @@ namespace PI.API.Controllers
         public SpeedController(ISpeedService speedService)
         {
             _speedService = speedService;
+        }
+
+        [HttpPost]
+        [Route("SaveSpeed")]
+        public Task<Speed> SaveSpeed([FromBody] SpeedDto speed)
+        {
+            return _speedService.SaveSpeed(speed);
         }
     }
 }

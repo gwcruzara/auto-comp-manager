@@ -1,9 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { RampService } from './services/ramp.service';
-import { RampDto } from 'src/app/domain/ramp/ramp-dto.models';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Ramp } from 'src/app/domain/ramp/ramp.models';
 
 @Component({
   selector: 'app-ramp',
@@ -12,40 +9,44 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class RampComponent implements OnInit {
 
-  private readonly $destroy = new Subject();
-
-  private formBuilder = inject(FormBuilder);
-  private route = inject(ActivatedRoute); 
-  private rampService = inject(RampService); 
-
-  mainForm!: FormGroup;
-  squadId!: number;
-  rampDto!: RampDto;
-
+  @Input() entity!: Ramp;
+  @Input() id!: number;
+  @Input() rampForm!: FormGroup;
+  
   ngOnInit(): void {
-    this.squadId = this.route.snapshot.params['id'];    
-    this.createFormGroup();
+    this.createFormGroup(); 
+    this.applyValues()
   }
 
-  saveRamp() {
-    this.rampService
-      .saveRamp(this.bodyBuilder())
-      .pipe(takeUntil(this.$destroy))
-      .subscribe(x => {
-          console.log(x)
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['entity'] && changes['entity'].currentValue) {
+      console.log(this.entity)
+      this.applyValues();      
+    }
   }
 
-  bodyBuilder(): RampDto {
-    return {...this.rampDto, ...this.mainForm.value} 
+  getScore() : string | undefined {
+    return this.entity !== null && this.entity?.score !== null ? this.entity?.score.toString() : 'Sem nota.'
+  }
+
+  getRank() : string | undefined {
+    return this.entity !== null && this.entity?.ranking !== null ? this.entity?.ranking.toString() : 'Sem rank.'
+  }
+
+  applyValues() {
+    
+    if(!this.entity || !this.id) {
+        return;
+    }
+
+    this.rampForm.patchValue({
+      "idSquad": this.id,
+      "distance": this.entity.distance
+    });    
   }
 
   private createFormGroup() {
-    this.mainForm = this.formBuilder.group({
-      "idSquad": [this.squadId],
-      "distance": [''],
-      "ranking": [''],
-      "score": ['']
-    })
+    this.rampForm.addControl("idSquad", new FormControl(this.id, []));
+    this.rampForm.addControl("distance", new FormControl('', []));
   }
 }

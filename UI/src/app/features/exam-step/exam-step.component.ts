@@ -10,6 +10,8 @@ import { TractionService } from '../traction/services/traction.service';
 import { TractionDto } from 'src/app/domain/traction/traction-dto.models';
 import { SpeedService } from '../speed/services/speed.service';
 import { SpeedDto } from 'src/app/domain/speed/speed-dto.models';
+import { RankingService } from '../ranking/services/ranking.service';
+import { RankingDto } from 'src/app/domain/ranking/ranking-dto.models';
 
 @Component({
   selector: 'app-exam-step',
@@ -18,12 +20,13 @@ import { SpeedDto } from 'src/app/domain/speed/speed-dto.models';
 })
 export class ExamStepComponent implements OnInit{
 
-  private readonly $onDestroy : Subject<any> = new Subject();
+  private readonly destroy$ : Subject<any> = new Subject();
 
   private squadService = inject(SquadService); 
   private rampService = inject(RampService); 
   private tractionService = inject(TractionService); 
   private speedService = inject(SpeedService); 
+  private rankingService = inject(RankingService);
   private activedRoute = inject(ActivatedRoute);
 
   rampForm: FormGroup = new FormGroup({});
@@ -35,39 +38,52 @@ export class ExamStepComponent implements OnInit{
   rampDto!: RampDto;
   tractionDto!: TractionDto;
   speedDto!: SpeedDto;
+  rankingDto: RankingDto[] = []
 
 
   ngOnInit(): void {
     this.id = this.activedRoute.snapshot.params["id"];
 
+    this.getRank();
+    
     if(this.id) {
-      this.squadService.getProve(this.id).pipe(takeUntil(this.$onDestroy)).subscribe(response => {
+      this.squadService.getProve(this.id)
+      .pipe(takeUntil(this.destroy$))
+        .subscribe(response => {
           this.entity = response;
       });
-    }
+    }    
   }
 
   saveRamp() {
     this.rampService.saveRamp(this.bodyBuilderRamp())
-    .pipe(takeUntil(this.$onDestroy))
-      .subscribe(x => {
-          this.entity.ramp = x;        
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+          this.entity.ramp = response;        
       });
   }
 
   saveTraction() {
     this.tractionService.saveTraction(this.bodyBuilderTraction())
-    .pipe(takeUntil(this.$onDestroy))
-      .subscribe(x => {
-          this.entity.traction = x; 
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+          this.entity.traction = response; 
       });
   }
 
   saveSpeed() {
     this.speedService.saveSpeed(this.bodyBuilderSpeed())
-    .pipe(takeUntil(this.$onDestroy))
-      .subscribe(x => {
-          this.entity.speed = x;
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+          this.entity.speed = response;
+      });
+  }
+
+  getRank() {
+    this.rankingService.getOverallRanking()
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+          this.rankingDto = response;
       });
   }
 

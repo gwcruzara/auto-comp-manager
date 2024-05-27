@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Speed } from 'src/app/domain/speed/speed.models';
-import { PenaltiesService } from '../penalties/services/traction.service';
+import { PenaltiesService } from '../penalties/services/penalties.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Penalties } from 'src/app/domain/penalties/penalties.model';
 

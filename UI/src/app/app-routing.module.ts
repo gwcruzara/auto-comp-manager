@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'exam-step',
     loadChildren: () => import('./features/exam-step/exam-step.module').then((m) => m.ExamStepModule),
   },
+  {
+    path: 'ramp',
+    loadChildren: () => import('./features/ramp/ramp.module').then((m) => m.RampModule),
+  },
 ];
 
 @NgModule({

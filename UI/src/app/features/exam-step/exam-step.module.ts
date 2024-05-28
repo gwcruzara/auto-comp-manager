@@ -19,9 +19,11 @@ import { TractionModule } from '../traction/traction.module';
     ExamStepRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    RampModule,
     SpeedModule,
     TractionModule
+  ],
+  exports: [
+    ExamStepComponent
   ]
 })
 export class ExamStepModule { }

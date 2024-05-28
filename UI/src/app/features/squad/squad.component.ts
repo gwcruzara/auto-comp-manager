@@ -17,6 +17,8 @@ export class SquadComponent implements OnInit {
   private router = inject(Router);
 
   public squads: Squad[] = [];
+  public squadSelected: Squad | null = null;
+  public squadIsOpened: boolean = false;
 
   ngOnInit(): void {
     this.squadService.getSquads()
@@ -26,7 +28,16 @@ export class SquadComponent implements OnInit {
       });
   }
 
-  openExam(id: number){
+  openExam(id: number) {
     this.router.navigate(['exam-step', id])
+  }
+
+  openSquadDetails(squad: Squad) {
+    this.squadSelected = squad;
+    this.squadIsOpened = true;
+  }
+
+  goToRamp() {
+    this.router.navigateByUrl(`Ramp/${this.squadSelected?.id}`)
   }
 }

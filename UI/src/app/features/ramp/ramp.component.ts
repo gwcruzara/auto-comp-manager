@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Ramp } from 'src/app/domain/ramp/ramp.models';
 
@@ -12,6 +12,25 @@ export class RampComponent implements OnInit {
   @Input() entity!: Ramp;
   @Input() id!: number;
   @Input() rampForm!: FormGroup;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.setFullHeight();
+  }
+
+
+  constructor(private el: ElementRef, private renderer: Renderer2) {
+    
+  }
+
+  ngAfterViewInit() {
+    this.setFullHeight();
+  }
+
+  setFullHeight() {
+    const windowHeight = window.innerHeight;
+    this.renderer.setStyle(this.el.nativeElement, 'height', windowHeight + 'px');
+  }
   
   ngOnInit(): void {
     this.createFormGroup(); 

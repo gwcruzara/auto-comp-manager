@@ -23,7 +23,6 @@ export class ExamStepComponent implements OnInit{
   private readonly destroy$ : Subject<any> = new Subject();
 
   private squadService = inject(SquadService); 
-  private rampService = inject(RampService); 
   private tractionService = inject(TractionService); 
   private speedService = inject(SpeedService); 
   private rankingService = inject(RankingService);
@@ -35,7 +34,6 @@ export class ExamStepComponent implements OnInit{
 
   id!: number;
   entity!: ProveDto;
-  rampDto!: RampDto;
   tractionDto!: TractionDto;
   speedDto!: SpeedDto;
   rankingDto: RankingDto[] = []
@@ -55,13 +53,7 @@ export class ExamStepComponent implements OnInit{
     }    
   }
 
-  saveRamp() {
-    this.rampService.saveRamp(this.bodyBuilderRamp())
-    .pipe(takeUntil(this.destroy$))
-      .subscribe(response => {
-          this.entity.ramp = response;        
-      });
-  }
+
 
   saveTraction() {
     this.tractionService.saveTraction(this.bodyBuilderTraction())
@@ -91,9 +83,7 @@ export class ExamStepComponent implements OnInit{
     return {...this.tractionDto, ...this.tractionForm.value} 
   }
 
-  bodyBuilderRamp(): RampDto {    
-    return { ...this.rampDto, ...this.rampForm.value } 
-  }
+
   
   bodyBuilderSpeed(): SpeedDto {
     return {...this.speedDto, ...this.speedForm.value} 

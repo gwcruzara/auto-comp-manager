@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2, ViewChild, inject } from '@angular/core';
 
 @Component({
   selector: 'app-navegation',
@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class NavegationComponent {
 
+  public readonly renderer = inject(Renderer2);
+
+  @ViewChild('contentWrapper', { static: false }) contentWrapper: any;
+
+  public mainSidebarHeight(height: any) {
+    this.renderer.setStyle(this.contentWrapper.nativeElement, 'min-height', height - 114 + 'px');
+  }
 }

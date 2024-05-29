@@ -9,4 +9,21 @@
 
 .custom-margin {
     margin-left: 2rem !important;
+    cursor: pointer;
+}
+
+.custom-card {
+    border-width: 1px;
+    box-shadow: none;
+    border-color: rgb(155, 155, 155);
+    background-color: transparent;
+    color: white;
+}
+
+.subtitle {
+    color: #7a7e7d
+}
+
+.red-button {
+    background-color: rgb(255, 0, 76);
 }

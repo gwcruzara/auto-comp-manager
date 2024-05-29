@@ -54,27 +54,19 @@
     </mat-card>
 </div> -->
 
-<!-- <div class="d-flex flex-row justify-content-center"> -->
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>
-                Ranking Geral    
-            </mat-card-title>
-        </mat-card-header>
-    
-        <mat-card-content>
-            <mat-list role="list" *ngFor="let rank of rankingDto">
-                <mat-list-item role="listitem"> 
-                    <span matListItemTitle>{{ rank.ranking }}° - {{ rank.squadName}}</span>
-                    <span matListItemLine>Nota: {{ rank.score}}</span>                
-                </mat-list-item>
-              </mat-list>
-        </mat-card-content>
-    </mat-card>
-<!-- </div> -->
+<mat-card class="full-height custom-card">
+    <mat-card-header>
+        <mat-card-title>
+            Ranking Geral    
+        </mat-card-title>
+    </mat-card-header>
 
-
-
-
-
-
+    <mat-card-content>
+        <mat-list role="list" *ngFor="let rank of rankingDto">
+            <mat-list-item role="listitem"> 
+                <span matListItemTitle style="color: white;">{{ rank.ranking }}° - {{ rank.squadName}}</span>
+                <span matListItemLine style="color: white;">Nota: {{ rank.score}}</span>                
+            </mat-list-item>
+            </mat-list>
+    </mat-card-content>
+</mat-card>

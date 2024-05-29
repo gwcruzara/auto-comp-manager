@@ -2,7 +2,7 @@
 
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-html, body { height: 100%; }
+html, body { height: 100%; overflow: hidden}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #e9eff5; }
 
 .card-font-size {
@@ -14,5 +14,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
 }
 
 .custom-color {
-    background-image: linear-gradient(rgb(0, 38, 255), rgb(183, 0, 255));
+    background-color: rgb(21, 19, 22);
+}
+
+.full-height {
+    height: 85vh;
 }

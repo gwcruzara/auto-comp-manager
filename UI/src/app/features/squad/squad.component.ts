@@ -3,6 +3,7 @@ import { SquadService } from './services/squad.service';
 import { Squad } from 'src/app/domain/squad/squad-model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-squad',
@@ -38,6 +39,14 @@ export class SquadComponent implements OnInit {
   }
 
   goToRamp() {
-    this.router.navigateByUrl(`Ramp/${this.squadSelected?.id}`)
+    this.router.navigateByUrl(`squad/ramp/${this.squadSelected?.id}`)
+  }
+
+  goToTraction() {
+    // this.router.navigateByUrl(`squad/traction/${this.squadSelected?.id}`)
+  }
+
+  goToSpeed() {
+    // this.router.navigateByUrl(`squad/traction/${this.squadSelected?.id}`)
   }
 }

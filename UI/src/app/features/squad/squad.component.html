@@ -1,29 +1,12 @@
-<!-- <div class="d-flex flex-row justify-content-center mt-2 m-2" *ngIf="squads">
-    <div *ngFor="let squad of squads" class="me-5">
-        <mat-card class="general-card" (click)="openExam(squad.id)">
-            <mat-card-header>
-              <mat-card-title>{{squad.name}}</mat-card-title>
-              <mat-card-subtitle>N° {{squad.carNumber}}</mat-card-subtitle>
-            </mat-card-header>
-
-            <mat-card-content>
-                <div class="mt-2">
-                    <mat-chip-listbox aria-label="student selection">
-                        <mat-chip *ngFor="let student of squad.student">
-                            {{student.name}}
-                        </mat-chip>
-                    </mat-chip-listbox>
-                </div>            
-            </mat-card-content>
-        </mat-card>
-    </div>
-</div> -->
+<div class="row mt-2 ms-4">
+    <h2 style="color: white;">Selecione a equipe abaixo</h2>
+</div>
 
 <div class="row" *ngIf="squads">
-    <div class="col-lg-6">
+    <div class="col-lg-7">
         <div class="row">
             <div *ngFor="let squad of squads" class="col-lg-6 col-md-6 col-sm-12 mt-2">
-                <mat-card class="custom-margin" (click)="openSquadDetails(squad)">
+                <mat-card class="custom-margin custom-card" (click)="openSquadDetails(squad)" matTooltip="Selecionar Equipe">
                     <mat-card-header>
                         <mat-card-title>{{squad.name}}</mat-card-title>
                     </mat-card-header>
@@ -34,39 +17,44 @@
         </div>
     </div>
 
-    <div class="col-lg-6 d-flex justify-content-center align-items-center mt-2">
+    <div class="col-lg-4">
         <ng-container *ngIf="squadIsOpened">
-            <mat-card class="w-100" style="max-width: 500px;">
-                <mat-card-header class="mb-2">
-                    <mat-card-title>{{squadSelected?.name}}</mat-card-title>
-                    <mat-card-subtitle>N° {{squadSelected?.carNumber}}</mat-card-subtitle>
-                </mat-card-header>
+            <div class="row">
+                <mat-card class="h-100 custom-card mt-2">
+                    <mat-card-header class="mb-2">
+                        <mat-card-title>{{squadSelected?.name}}</mat-card-title>
+                        <mat-card-subtitle class="subtitle">N° {{squadSelected?.carNumber}}</mat-card-subtitle>
+                    </mat-card-header>
+        
+                    <mat-divider style="background-color: white;"></mat-divider>
     
-                <mat-divider></mat-divider>
+                    <mat-card-content class="mt-2 mb-2">
+                        <ng-container *ngIf="squadSelected?.student?.length! > 0">
+                            <mat-chip-listbox aria-label="student selection">
+                                    <div class="row">
+                                        <div *ngFor="let student of squadSelected?.student">
+                                            <mat-chip class="col-md-12">
+                                                {{student.name}}
+                                            </mat-chip>                                            
+                                        </div>
+                                    </div>
+                            </mat-chip-listbox>
+                        </ng-container>
+                        <ng-container *ngIf="squadSelected?.student?.length! <= 0">
+                            <span>Não foi encontrado nenhum estudante para essa equipe.</span>
+                        </ng-container>
+                    </mat-card-content>
+    
+                    <mat-divider style="background-color: white;"></mat-divider>
+    
+                    <mat-card-actions class="mt-1 d-flex justify-content-start">
+                        <button mat-stroked-button class="red-button ms-1" (click)="goToRamp()">Rampa</button>
+                        <button mat-stroked-button class="red-button ms-1">Tração</button>
+                        <button mat-stroked-button class="red-button ms-1">Velocidade</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
 
-                <mat-card-content class="mt-2 mb-2">
-                    <ng-container *ngIf="squadSelected?.student?.length! > 0">
-                        <mat-chip-listbox aria-label="student selection">
-                            <div class="row">
-                                <mat-chip *ngFor="let student of squadSelected?.student" class="col-md-11">
-                                    {{student.name}}
-                                </mat-chip>
-                            </div>
-                        </mat-chip-listbox>
-                    </ng-container>
-                    <ng-container *ngIf="squadSelected?.student?.length! <= 0">
-                        <span>Não foi encontrado nenhum estudante para essa equipe.</span>
-                    </ng-container>
-                </mat-card-content>
-
-                <mat-divider></mat-divider>
-
-                <mat-card-actions class="mt-1">
-                    <button mat-stroked-button class="me-2" (click)="goToRamp()">Rampa</button>
-                    <button mat-stroked-button class="me-2">Tração</button>
-                    <button mat-stroked-button class="me-2">Velocidade</button>
-                </mat-card-actions>
-            </mat-card>
         </ng-container>
     </div>
 </div>

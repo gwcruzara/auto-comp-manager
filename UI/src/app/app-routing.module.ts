@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RampComponent } from './features/ramp/ramp.component';
 
 const routes: Routes = [
 
@@ -12,8 +13,8 @@ const routes: Routes = [
     loadChildren: () => import('./features/exam-step/exam-step.module').then((m) => m.ExamStepModule),
   },
   {
-    path: 'ramp',
-    loadChildren: () => import('./features/ramp/ramp.module').then((m) => m.RampModule),
+    path: 'squad/ramp/:id',
+    component: RampComponent
   },
 ];
 

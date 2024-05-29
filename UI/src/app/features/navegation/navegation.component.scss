@@ -1,0 +1,19 @@
+nav.main-header.navbar.navbar-expand.text-sm {    
+    // background-image: linear-gradient(rgb(0, 38, 255), rgb(183, 0, 255));
+    background-image: linear-gradient(rgb(255, 0, 76), rgb(21, 19, 22));
+}
+
+.content-wrapper {
+    min-height: calc(100vh - 100px);
+    height: 100%;
+  
+    .content {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+}
+  
+
+.custom-footer {
+  background-image: linear-gradient(rgb(21, 19, 22), rgb(255, 0, 76));
+}

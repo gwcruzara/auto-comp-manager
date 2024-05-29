@@ -54,9 +54,14 @@ namespace PI.Core.Services
             return squadRankingList.AsQueryable();
         }
 
-        private static double GetSquadScore(double rampScore, double speedScore, double tractionScore)
+        private static double GetSquadScore(double? rampScore, double? speedScore, double? tractionScore)
         {
-            return rampScore + speedScore + tractionScore;
+            if (rampScore.HasValue && speedScore.HasValue && tractionScore.HasValue )
+            {
+                return rampScore.Value + speedScore.Value + tractionScore.Value;
+            }
+
+            return 0;
         }
 
         private int GetOverallRanking(List<double> squadScores, double currentSquadScore)

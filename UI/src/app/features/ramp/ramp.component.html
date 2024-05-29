@@ -1,35 +1,39 @@
 <div class="row mt-2 m-1">
-    <mat-card class="ramp-card full-height col-lg-6">
-        <mat-card-header>
-            <mat-card-title>
-                Rampa
-            </mat-card-title>
-        </mat-card-header>
-    
-        <mat-divider></mat-divider>
-    
-        <mat-card-content>
-            <form [formGroup]="rampForm" class="remove-overflow">
-                <div class="row m-1 mt-3">
-                    <mat-form-field class="col-md-12" appearance="outline" >
-                        <mat-label>Distância Percorrida</mat-label>
-                        <input matInput formControlName="distance">
-                    </mat-form-field>
+    <div class="col-lg-6">
+        <mat-card class="custom-card full-height">
+            <mat-card-header>
+                <mat-card-title>
+                    Rampa
+                </mat-card-title>
+            </mat-card-header>
+        
+            <mat-divider></mat-divider>
+        
+            <mat-card-content>
+                <div [formGroup]="rampForm" class="remove-overflow">
+                    <div class="row m-1 mt-3">
+                        <mat-form-field class="col-md-12" appearance="outline" >
+                            <mat-label>Distância Percorrida</mat-label>
+                            <input matInput formControlName="distance">
+                        </mat-form-field>
+                    </div>
+                
+                    <div class="custom-padding">     
+                        <strong>Ranking:</strong> {{getRank()}}                    
+                    </div>
+                    <div class="custom-padding">
+                        <strong>Nota:</strong> {{getScore()}}
+                    </div>
                 </div>
-            
-                <div class="custom-padding">     
-                    <strong>Ranking:</strong> {{getRank()}}                    
-                </div>
-                <div class="custom-padding">
-                    <strong>Nota:</strong> {{getScore()}}
-                </div>
-            </form>
-        </mat-card-content>
-    
-        <mat-card-actions class="mt-auto">
-            <button mat-stroked-button>Salvar</button>
-        </mat-card-actions>
-    </mat-card>
+
+   
+            </mat-card-content>
+        
+            <mat-card-actions class="mt-auto">
+                <button mat-stroked-button class="red-button">Salvar</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 
     <div class="col-lg-6">
         <app-exam-step></app-exam-step>

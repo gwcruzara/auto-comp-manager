@@ -1,6 +1,9 @@
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, SimpleChanges, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Ramp } from 'src/app/domain/ramp/ramp.models';
+import { RampService } from './services/ramp.service';
+import { RampDto } from 'src/app/domain/ramp/ramp-dto.models';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-ramp',
@@ -9,28 +12,17 @@ import { Ramp } from 'src/app/domain/ramp/ramp.models';
 })
 export class RampComponent implements OnInit {
 
+  private readonly destroy$ : Subject<any> = new Subject();
+
+
   @Input() entity!: Ramp;
   @Input() id!: number;
-  @Input() rampForm!: FormGroup;
+  rampForm: FormGroup = new FormGroup({});
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.setFullHeight();
-  }
+  private rampService = inject(RampService); 
 
+  rampDto!: RampDto;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
-    
-  }
-
-  ngAfterViewInit() {
-    this.setFullHeight();
-  }
-
-  setFullHeight() {
-    const windowHeight = window.innerHeight;
-    this.renderer.setStyle(this.el.nativeElement, 'height', windowHeight + 'px');
-  }
   
   ngOnInit(): void {
     this.createFormGroup(); 
@@ -39,7 +31,6 @@ export class RampComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['entity'] && changes['entity'].currentValue) {
-      console.log(this.entity)
       this.applyValues();      
     }
   }
@@ -50,6 +41,18 @@ export class RampComponent implements OnInit {
 
   getRank() : string | undefined {
     return this.entity !== null && this.entity?.ranking !== null ? this.entity?.ranking.toString() : 'Sem rank.'
+  }
+
+  saveRamp() {
+    this.rampService.saveRamp(this.bodyBuilderRamp())
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+               
+      });
+  }
+
+  bodyBuilderRamp(): RampDto {    
+    return { ...this.rampDto, ...this.rampForm.value } 
   }
 
   applyValues() {
@@ -65,7 +68,7 @@ export class RampComponent implements OnInit {
   }
 
   private createFormGroup() {
-    this.rampForm.addControl("idSquad", new FormControl(this.id, []));
+    this.rampForm.addControl("idSquad", new FormControl('', []));
     this.rampForm.addControl("distance", new FormControl('', []));
   }
 }

@@ -1,15 +1,27 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<div class="wrapper">
+  <nav class="main-header navbar navbar-expand text-sm">
     <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/">AutoCompManager</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <a class="navbar-brand" routerLink="/" style="color: white;">AutoCompManager</a>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLink="/">Times</a>
+            <a class="nav-link active" aria-current="page" routerLink="/" style="color: white;">Ranking Geral</a>
           </li>
         </ul>
       </div>
     </div>
-</nav>
+  </nav>
+
+  <div #contentWrapper class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+
+  <footer class="main-footer text-sm custom-footer">
+    <div>
+      <div class="ms-1" style="color: white;"><b>PROJETO INTERDISPLINAR</b> | HAJA</div>
+
+      <div class="ms-1 d-none d-sm-block" style="color: white;"><b>Versão</b> 1.0.0 </div>
+    </div>
+  </footer>
+</div>

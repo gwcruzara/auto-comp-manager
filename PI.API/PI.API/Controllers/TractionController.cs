@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PI.Core.Services;
 using PI.Domain.Models;
 using PI.Domain.Services;
 
@@ -20,6 +21,20 @@ namespace PI.API.Controllers
         public Task<Traction> SaveTraction([FromBody] TractionDto traction)
         {
             return _tractionService.SaveTraction(traction);
+        }
+
+        [HttpGet]
+        [Route("GetTraction/{squadId}")]
+        public Traction GetTraction(int squadId)
+        {
+            return _tractionService.GetTraction(squadId);
+        }
+
+        [HttpGet]
+        [Route("GetRank")]
+        public IQueryable<RankingDto> GetRank()
+        {
+            return _tractionService.GetRanking();
         }
     }
 }

@@ -2,8 +2,6 @@
 using PI.Core.DataContext;
 using PI.Domain.Interfaces;
 using PI.Domain.Models;
-using PI.Domain.Models.Prove;
-using System.Linq;
 
 namespace PI.Core.Services
 {
@@ -19,19 +17,6 @@ namespace PI.Core.Services
         public async Task<List<Squad>> GetSquadList()
         {            
             return await _context.Squads.Include(x => x.Student).ToListAsync();
-        }
-
-        public ProveDto GetProve(int squadId)
-        { 
-            return _context.Squads.AsNoTracking()
-                .Where(squad => squad.Id == squadId)
-                .Select(squad => new ProveDto
-                {
-                    SquadId = squad.Id,
-                    Ramp = squad.Ramp.FirstOrDefault(),
-                    Speed = squad.Speed.FirstOrDefault(),
-                    Traction = squad.Traction.FirstOrDefault()
-                }).FirstOrDefault();
         }
 
         public IQueryable<RankingDto> GetRankingList()
@@ -51,7 +36,7 @@ namespace PI.Core.Services
                 squadRanking.Ranking = GetOverallRanking(squadScores, squadRanking.Score);
             }
 
-            return squadRankingList.AsQueryable();
+            return squadRankingList.AsQueryable().OrderBy(x => x.Ranking);
         }
 
         private static double GetSquadScore(double? rampScore, double? speedScore, double? tractionScore)

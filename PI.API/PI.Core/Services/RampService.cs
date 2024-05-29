@@ -1,4 +1,5 @@
 ﻿using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
 using PI.Core.DataContext;
 using PI.Domain.Interfaces;
 using PI.Domain.Models;
@@ -11,6 +12,33 @@ namespace PI.Core.Services
         public RampService(AutoCompManagerContext context)
         {
             _context = context;
+        }
+
+        public IQueryable<RankingDto> GetRanking()
+        {
+            var rankList = _context.Ramps.AsNoTracking()
+            .Select(ramp => new RankingDto
+            {
+                SquadName = ramp.Squad.Name,
+                CarNumber = ramp.Squad.CarNumber,
+                Score = GetRankScore(ramp.Score)
+            }).ToList();
+
+            var scores = rankList.Select(ramp => ramp.Score).ToList();
+
+            foreach (var rank in rankList)
+            {
+                rank.Ranking = GetOverallRank(scores, rank.Score);
+            }
+
+            return rankList.AsQueryable().OrderBy(x => x.Ranking);
+        }
+
+        public Ramp GetRamp(int squadId)
+        {
+            return _context.Ramps.AsNoTracking()
+                .Where(ramp => ramp.IdSquad == squadId)
+                .FirstOrDefault() ?? throw new Exception("Ramp not found");
         }
 
         public async Task<Ramp> SaveRamp(RampDto ramp)
@@ -48,23 +76,6 @@ namespace PI.Core.Services
 
             await _context.BulkInsertOrUpdateAsync(listOfRamps);
 
-            ////int currentRank = 1;
-
-            ////for (int i = 0; i < listOfRamps.Count; i++)
-            ////{
-            ////    if (i > 0 && listOfRamps[i].Distance == listOfRamps[i - 1].Distance)
-            ////    {
-            ////        listOfRamps[i].Ranking = listOfRamps[i - 1].Ranking;
-            ////    }
-            ////    else
-            ////    {
-            ////        listOfRamps[i].Ranking = currentRank;
-            ////    }
-
-            ////    listOfRamps[i].Score = GetScore(listOfRamps[i].Ranking);
-            ////    currentRank++;
-            ////}
-
             return rampModifiedOrAdded;
         }
 
@@ -99,13 +110,23 @@ namespace PI.Core.Services
             return 0.0;
         }
 
-        private int GetRank(List<Ramp> ramps, Ramp targetRamp)
+        private static double GetRankScore(double? score)
         {
-            var ranking = ramps.OrderByDescending(ramp => ramp.Distance).ToList();
+            if (score.HasValue)
+            {
+                return score.Value;
+            }
 
-            int rank = ranking.FindIndex(ramp => ramp == targetRamp);
+            return 0;
+        }
 
-            return rank + 1;
+        private int GetOverallRank(List<double> scores, double currentScore)
+        {
+            scores.Sort((a, b) => b.CompareTo(a));
+
+            int rank = scores.IndexOf(currentScore) + 1;
+
+            return rank;
         }
     }
 }

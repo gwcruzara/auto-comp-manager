@@ -1,4 +1,5 @@
 ﻿using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
 using PI.Core.DataContext;
 using PI.Domain.Models;
 using PI.Domain.Services;
@@ -14,6 +15,34 @@ namespace PI.Core.Services
             _context = context;
         }
 
+        public IQueryable<RankingDto> GetRanking()
+        {
+            var rankList = _context.Speeds.AsNoTracking()
+            .Select(speed => new RankingDto
+            {
+                SquadName = speed.Squad.Name,
+                CarNumber = speed.Squad.CarNumber,
+                Score = GetRankScore(speed.Score)
+            }).ToList();
+
+            var scores = rankList.Select(speed => speed.Score).ToList();
+
+            foreach (var rank in rankList)
+            {
+                rank.Ranking = GetOverallRank(scores, rank.Score);
+            }
+
+            return rankList.AsQueryable().OrderBy(x => x.Ranking);
+        }
+
+        public Speed GetSpeed(int squadId)
+        {
+            return _context.Speeds.AsNoTracking()
+                .Where(speed => speed.IdSquad == squadId)
+                .Include(speed => speed.Penalties)
+                .FirstOrDefault() ?? throw new Exception("Speed not found");
+        }
+
         public async Task<Speed> SaveSpeed(SpeedDto speed)
         {
             var squadSpeed = _context.Speeds.Where(x => x.IdSquad == speed.IdSquad).FirstOrDefault();
@@ -24,7 +53,7 @@ namespace PI.Core.Services
 
             if (squadSpeed != null)
             {
-                squadSpeed.Time = GetTime(speed);
+                squadSpeed.Time = GetTime(speed);              
                 speedModifiedOrAdded = squadSpeed;
             }
             else
@@ -102,6 +131,25 @@ namespace PI.Core.Services
             }
 
             return realTime;
+        }
+
+        private static double GetRankScore(double? speedScore)
+        {
+            if (speedScore.HasValue)
+            {
+                return speedScore.Value;
+            }
+
+            return 0;
+        }
+
+        private int GetOverallRank(List<double> scores, double currentScore)
+        {
+            scores.Sort((a, b) => b.CompareTo(a));
+
+            int rank = scores.IndexOf(currentScore) + 1;
+
+            return rank;
         }
     }
 }

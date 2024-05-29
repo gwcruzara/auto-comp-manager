@@ -1,4 +1,5 @@
 ﻿using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
 using PI.Core.DataContext;
 using PI.Domain.Models;
 using PI.Domain.Services;
@@ -12,6 +13,33 @@ namespace PI.Core.Services
         public TractionService(AutoCompManagerContext context) 
         {
             _context = context;
+        }
+
+        public IQueryable<RankingDto> GetRanking()
+        {
+            var rankList = _context.Tractions.AsNoTracking()
+            .Select(traction => new RankingDto
+            {
+                SquadName = traction.Squad.Name,
+                CarNumber = traction.Squad.CarNumber,
+                Score = GetRankScore(traction.Score)
+            }).ToList();
+
+            var scores = rankList.Select(traction => traction.Score).ToList();
+
+            foreach (var rank in rankList)
+            {
+                rank.Ranking = GetOverallRank(scores, rank.Score);
+            }
+
+            return rankList.AsQueryable().OrderBy(x => x.Ranking);
+        }
+
+        public Traction GetTraction(int squadId)
+        {
+            return _context.Tractions.AsNoTracking()
+                .Where(traction => traction.IdSquad == squadId)
+                .FirstOrDefault() ?? throw new Exception("Traction not found");
         }
 
         public async Task<Traction> SaveTraction(TractionDto traction)
@@ -80,6 +108,25 @@ namespace PI.Core.Services
             }
 
             return 0.0;
+        }
+
+        private static double GetRankScore(double? score)
+        {
+            if (score.HasValue)
+            {
+                return score.Value;
+            }
+
+            return 0;
+        }
+
+        private int GetOverallRank(List<double> scores, double currentScore)
+        {
+            scores.Sort((a, b) => b.CompareTo(a));
+
+            int rank = scores.IndexOf(currentScore) + 1;
+
+            return rank;
         }
     }
 }

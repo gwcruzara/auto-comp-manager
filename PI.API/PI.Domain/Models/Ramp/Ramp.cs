@@ -6,6 +6,6 @@
         public int Ranking { get; set; }
         public double Score { get; set; }
         public int IdSquad { get; set; }
-        public Squad? Squad { get; set; }
+        public Squad Squad { get; set; }
     }
 }

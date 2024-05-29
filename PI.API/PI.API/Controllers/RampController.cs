@@ -8,18 +8,32 @@ namespace PI.API.Controllers
     [ApiController]
     public class RampController : ControllerBase
     {
-        private readonly IRampService _RampService;
+        private readonly IRampService _rampService;
 
-        public RampController(IRampService RampService)
+        public RampController(IRampService rampService)
         {
-            _RampService = RampService;
+            _rampService = rampService;
         }
 
         [HttpPost]
         [Route("SaveRamp")]
         public Task<Ramp> SaveRamp([FromBody] RampDto ramp)
         {
-            return _RampService.SaveRamp(ramp);
+            return _rampService.SaveRamp(ramp);
+        }
+        
+        [HttpGet]
+        [Route("GetRamp/{squadId}")]
+        public Ramp GetRamp(int squadId)
+        {
+            return _rampService.GetRamp(squadId);
+        }
+
+        [HttpGet]
+        [Route("GetRank")]
+        public IQueryable<RankingDto> GetRank()
+        {
+            return _rampService.GetRanking();
         }
     }
 }

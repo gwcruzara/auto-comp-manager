@@ -21,5 +21,19 @@ namespace PI.API.Controllers
         {
             return _speedService.SaveSpeed(speed);
         }
+
+        [HttpGet]
+        [Route("GetSpeed/{squadId}")]
+        public Speed GetSpeed(int squadId)
+        {
+            return _speedService.GetSpeed(squadId);
+        }
+
+        [HttpGet]
+        [Route("GetRank")]
+        public IQueryable<RankingDto> GetRank()
+        {
+            return _speedService.GetRanking();
+        }
     }
 }

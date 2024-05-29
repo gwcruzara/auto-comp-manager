@@ -40,7 +40,7 @@
                                     </div>
                             </mat-chip-listbox>
                         </ng-container>
-                        <ng-container *ngIf="squadSelected?.student?.length! <= 0">
+                        <ng-container *ngIf="squadSelected?.student?.length! === 0">
                             <span>Não foi encontrado nenhum estudante para essa equipe.</span>
                         </ng-container>
                     </mat-card-content>
@@ -49,8 +49,8 @@
     
                     <mat-card-actions class="mt-1 d-flex justify-content-start">
                         <button mat-stroked-button class="red-button ms-1" (click)="goToRamp()">Rampa</button>
-                        <button mat-stroked-button class="red-button ms-1">Tração</button>
-                        <button mat-stroked-button class="red-button ms-1">Velocidade</button>
+                        <button mat-stroked-button class="red-button ms-1" (click)="goToTraction()">Tração</button>
+                        <button mat-stroked-button class="red-button ms-1" (click)="goToSpeed()">Velocidade</button>
                     </mat-card-actions>
                 </mat-card>
             </div>

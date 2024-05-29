@@ -1,9 +1,11 @@
-import { Component, ElementRef, HostListener, Input, OnInit, Renderer2, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Ramp } from 'src/app/domain/ramp/ramp.models';
 import { RampService } from './services/ramp.service';
 import { RampDto } from 'src/app/domain/ramp/ramp-dto.models';
 import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { RankingDto } from 'src/app/domain/ranking/ranking-dto.models';
 
 @Component({
   selector: 'app-ramp',
@@ -13,62 +15,79 @@ import { Subject, takeUntil } from 'rxjs';
 export class RampComponent implements OnInit {
 
   private readonly destroy$ : Subject<any> = new Subject();
-
-
-  @Input() entity!: Ramp;
-  @Input() id!: number;
-  rampForm: FormGroup = new FormGroup({});
-
-  private rampService = inject(RampService); 
-
-  rampDto!: RampDto;
-
   
+  private rampService = inject(RampService); 
+  private activedRoute = inject(ActivatedRoute); 
+
+  rampForm: FormGroup = new FormGroup({});
+  
+  entity?: Ramp;
+  rampDto!: RampDto;
+  rankingDto: RankingDto[] = [];
+  squadId!: number;
+
   ngOnInit(): void {
+    this.squadId = this.activedRoute.snapshot.params["id"];
+    this.getRamp();
+    this.getOverallRank();
     this.createFormGroup(); 
-    this.applyValues()
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['entity'] && changes['entity'].currentValue) {
-      this.applyValues();      
-    }
-  }
-
-  getScore() : string | undefined {
-    return this.entity !== null && this.entity?.score !== null ? this.entity?.score.toString() : 'Sem nota.'
-  }
-
-  getRank() : string | undefined {
-    return this.entity !== null && this.entity?.ranking !== null ? this.entity?.ranking.toString() : 'Sem rank.'
   }
 
   saveRamp() {
     this.rampService.saveRamp(this.bodyBuilderRamp())
     .pipe(takeUntil(this.destroy$))
+    .subscribe(response => {
+        this.applyValues(response);
+        this.getOverallRank();
+    });
+  }
+
+  getRamp() {
+    this.rampService.getRamp(this.squadId)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(response => {
+      if(response.id){
+        this.applyValues(response);
+      }        
+    });
+  }
+
+  getOverallRank() {
+    this.rampService.getRank()
+    .pipe(takeUntil(this.destroy$))
       .subscribe(response => {
-               
+          this.rankingDto = response;
       });
+  }
+
+  getScore() : string {
+    return this.entity !== undefined && this.entity?.score !== undefined ? this.entity?.score.toString() : 'Sem nota.'
+  }
+
+  getRank() : string {
+    return this.entity !== undefined && this.entity?.ranking !== undefined ? `${this.entity?.ranking.toString()}°` : 'Sem rank.'
   }
 
   bodyBuilderRamp(): RampDto {    
     return { ...this.rampDto, ...this.rampForm.value } 
   }
 
-  applyValues() {
+  applyValues(entity: Ramp) {
+
+    this.entity = entity;
     
-    if(!this.entity || !this.id) {
+    if(!entity || !this.squadId) {
         return;
     }
 
     this.rampForm.patchValue({
-      "idSquad": this.id,
-      "distance": this.entity.distance
+      "idSquad": this.squadId,
+      "distance": entity.distance
     });    
   }
 
   private createFormGroup() {
-    this.rampForm.addControl("idSquad", new FormControl('', []));
+    this.rampForm.addControl("idSquad", new FormControl(this.squadId, []));
     this.rampForm.addControl("distance", new FormControl('', []));
   }
 }

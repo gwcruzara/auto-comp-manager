@@ -5,10 +5,6 @@
 html, body { height: 100%; overflow: hidden}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #e9eff5; }
 
-.card-font-size {
-    // font-size: 15px;
-}
-
 .custom-padding {
     padding: 0px 16px;
 }
@@ -20,3 +16,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
 .full-height {
     height: 85vh;
 }
+
+:root {
+    --mdc-checkbox-disabled-selected-icon-color: white ;
+    --mdc-checkbox-disabled-unselected-icon-color: white ;
+
+    --mdc-checkbox-selected-checkmark-color: white ;
+    --mdc-checkbox-selected-focus-icon-color: white ;
+    --mdc-checkbox-selected-hover-icon-color: white ;
+    --mdc-checkbox-selected-icon-color: white ;
+    --mdc-checkbox-selected-pressed-color: white ;
+
+    --mdc-checkbox-unselected-focus-icon-color: white ;
+    --mdc-checkbox-unselected-hover-icon-color: white;
+    --mdc-checkbox-unselected-icon-color: white ;
+
+    --mdc-checkbox-selected-focus-state-layer-color: white ;
+    --mdc-checkbox-selected-hover-state-layer-color: white ;
+    --mdc-checkbox-selected-pressed-state-layer-color: white ;
+
+    --mdc-checkbox-unselected-focus-state-layer-color: white ;
+    --mdc-checkbox-unselected-hover-state-layer-color: white ;
+    --mdc-checkbox-unselected-pressed-state-layer-color: white ;
+
+  }

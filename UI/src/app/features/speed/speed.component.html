@@ -1,27 +1,56 @@
-<form [formGroup]="speedForm" class="remove-overflow">
-    <div class="row m-1 mt-3">
-        <mat-form-field class="col" appearance="outline" >
-            <mat-label>Tempo</mat-label>
-            <input matInput formControlName="time">
-        </mat-form-field>
+<div class="row mt-2 m-1">
+    <div class="col-lg-6">
+        <mat-card class="custom-card full-height">
+            <mat-card-header>
+                <mat-card-title>
+                    Valocidade
+                </mat-card-title>
+            </mat-card-header>
+        
+            <mat-divider></mat-divider>
+        
+            <mat-card-content>
+                <div [formGroup]="speedForm" class="remove-overflow">
+                    <div class="row m-1 mt-3">
+                        <mat-form-field class="col" appearance="outline" >
+                            <mat-label>Tempo</mat-label>
+                            <input matInput formControlName="time">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="custom-padding">
+                                <strong>Ranking:</strong> {{ getRank() }}
+                            </div>
+                            <div class="custom-padding">
+                                <strong>Nota:</strong> {{ getScore() }}
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <section>
+                                <mat-checkbox class="col-md-4" formControlName="burnedStart">Queima de Largada</mat-checkbox>
+                                <mat-checkbox class="col-md-4" formControlName="cutWay">Cortar Caminho</mat-checkbox>
+                                <mat-checkbox class="col-md-4" formControlName="outsideLine">Fora da Faixa</mat-checkbox>
+                            </section>
+                        </div>                  
+                    </div>
+
+                    <div class="row">
+
+                    </div>
+                </div>   
+            </mat-card-content>
+        
+            <mat-card-actions class="mt-auto">
+                <button mat-stroked-button class="red-button" (click)="saveSpeed()">Salvar</button>
+            </mat-card-actions>
+        </mat-card>
     </div>
 
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="custom-padding">
-                <strong>Ranking:</strong> {{ getRank() }}
-            </div>
-            <div class="custom-padding">
-                <strong>Nota:</strong> {{ getScore() }}
-            </div>
-        </div>
-        <div class="col-lg-9">
-            <mat-checkbox class="col-md-4" formControlName="burnedStart">Queima de Largada</mat-checkbox>
-            <mat-checkbox class="col-md-4" formControlName="cutWay">Cortar Caminho</mat-checkbox>
-            <mat-checkbox class="col-md-4" formControlName="outsideLine">Fora da Faixa</mat-checkbox>
-        </div>
-  
+    <div class="col-lg-6">        
+        <app-ranking [title]="'Ranking de Velocidade'" [rankingDto]="rankingDto"></app-ranking>
     </div>
-    
+</div>
 
-</form>
+

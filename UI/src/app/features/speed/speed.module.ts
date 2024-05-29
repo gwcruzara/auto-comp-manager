@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SpeedComponent } from './speed.component';
+import { RankingModule } from '../ranking/ranking.module';
+import { SpeedRoutingModule } from './speed-routing.module';
 
 
 @NgModule({
@@ -13,10 +15,12 @@ import { SpeedComponent } from './speed.component';
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    SpeedRoutingModule,
+    ReactiveFormsModule,
+    RankingModule
   ],
   exports: [
-    SpeedComponent
+    SharedModule
   ]
 })
 export class SpeedModule { }

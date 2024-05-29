@@ -39,14 +39,14 @@ export class SquadComponent implements OnInit {
   }
 
   goToRamp() {
-    this.router.navigateByUrl(`squad/ramp/${this.squadSelected?.id}`)
+    this.router.navigateByUrl(`ramp/${this.squadSelected?.id}`)
   }
 
   goToTraction() {
-    // this.router.navigateByUrl(`squad/traction/${this.squadSelected?.id}`)
+    this.router.navigateByUrl(`traction/${this.squadSelected?.id}`)
   }
 
   goToSpeed() {
-    // this.router.navigateByUrl(`squad/traction/${this.squadSelected?.id}`)
+    this.router.navigateByUrl(`speed/${this.squadSelected?.id}`)
   }
 }

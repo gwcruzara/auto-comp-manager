@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TractionService } from './services/traction.service';
 import { Subject, takeUntil } from 'rxjs';
 import { TractionDto } from 'src/app/domain/traction/traction-dto.models';
-import { ProveDto } from 'src/app/domain/prove/prove-dto.models';
 import { Traction } from 'src/app/domain/traction/traction.models';
+import { ActivatedRoute } from '@angular/router';
+import { RankingDto } from 'src/app/domain/ranking/ranking-dto.models';
 
 @Component({
   selector: 'app-traction',
@@ -13,42 +14,78 @@ import { Traction } from 'src/app/domain/traction/traction.models';
 })
 export class TractionComponent implements OnInit {
 
-  @Input() entity!: Traction;
-  @Input() id!: number;
-  @Input() tractionForm!: FormGroup;  
+  private readonly destroy$ : Subject<any> = new Subject();
+
+  private tractionService = inject(TractionService); 
+  private activedRoute = inject(ActivatedRoute); 
+  
+  tractionForm: FormGroup = new FormGroup({});  
+  
+  entity!: Traction;
+  tractionDto!: TractionDto;
+  rankingDto: RankingDto[] = [];
+  squadId!: number;
 
   ngOnInit(): void {
-    this.createFormGroup();
-    this.applyValues();
+    this.squadId = this.activedRoute.snapshot.params["id"];
+    this.getTraction();
+    this.getOverallRank();
+    this.createFormGroup();    
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['entity'] && changes['entity'].currentValue) {      
-      this.applyValues();      
-    }
+  saveTraction() {
+    this.tractionService.saveTraction(this.bodyBuilderTraction())
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+        this.applyValues(response);
+        this.getOverallRank();
+      });
   }
 
-  getScore() : string | undefined {
-    return this.entity !== null && this.entity?.score !== null ? this.entity?.score.toString() : 'Sem nota.'
+  getTraction() {
+    this.tractionService.getTraction(this.squadId)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(response => {
+      if(response.id){
+        this.applyValues(response);
+      }
+    });
   }
 
-  getRank() : string | undefined {
-    return this.entity !== null && this.entity?.ranking !== null ? this.entity?.ranking.toString() : 'Sem rank.'
+  getOverallRank() {
+    this.tractionService.getRank()
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+          this.rankingDto = response;
+      });
   }
 
-  applyValues() {
-    if(!this.entity || !this.id) {
+  getScore() : string {
+    return this.entity !== undefined && this.entity?.score !== undefined ? this.entity?.score.toString() : 'Sem nota.'
+  }
+
+  getRank() : string {
+    return this.entity !== undefined && this.entity?.ranking !== undefined ? `${this.entity?.ranking.toString()}°` : 'Sem rank.'
+  }
+
+  bodyBuilderTraction(): TractionDto {
+    return {...this.tractionDto, ...this.tractionForm.value} 
+  }
+
+  applyValues(entity: Traction) {
+    this.entity = entity;
+    if(!entity || !this.squadId) {
         return;
     }
 
     this.tractionForm.patchValue({
-      "idSquad": this.id,
-      "weight": this.entity.weight,
+      "idSquad": this.squadId,
+      "weight": entity.weight,
     });
   }
 
   private createFormGroup() {
-    this.tractionForm.addControl("idSquad", new FormControl(this.id, []));
+    this.tractionForm.addControl("idSquad", new FormControl(this.squadId, []));
     this.tractionForm.addControl("weight", new FormControl('', []));
   }
 }

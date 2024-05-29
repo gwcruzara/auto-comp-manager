@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TractionComponent } from './traction.component';
+import {  RankingModule } from '../ranking/ranking.module';
+import { TractionRoutingModule } from './traction-routing.module';
 
 
 @NgModule({
@@ -13,10 +15,12 @@ import { TractionComponent } from './traction.component';
   imports: [
     CommonModule,
     SharedModule,
-    ReactiveFormsModule
+    TractionRoutingModule,
+    ReactiveFormsModule,
+    RankingModule
   ],
   exports: [
-    TractionComponent
+    SharedModule
   ]
 })
 export class TractionModule { }

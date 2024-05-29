@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RampComponent } from './features/ramp/ramp.component';
 
 const routes: Routes = [
 
@@ -9,12 +8,20 @@ const routes: Routes = [
     loadChildren: () => import('./features/squad/squad.module').then((m) => m.SquadModule),
   },
   {
-    path: 'exam-step',
-    loadChildren: () => import('./features/exam-step/exam-step.module').then((m) => m.ExamStepModule),
+    path: 'ramp',
+    loadChildren: () => import('./features/ramp/ramp.module').then((m) => m.RampModule),
   },
   {
-    path: 'squad/ramp/:id',
-    component: RampComponent
+    path: 'traction',
+    loadChildren: () => import('./features/traction/traction.module').then((m) => m.TractionModule),
+  },
+  {
+    path: 'speed',
+    loadChildren: () => import('./features/speed/speed.module').then((m) => m.SpeedModule),
+  },
+  {
+    path: 'ranking',
+    loadChildren: () => import('./features/ranking/ranking.module').then((m) => m.RankingModule),
   },
 ];
 

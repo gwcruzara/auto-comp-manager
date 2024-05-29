@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RampComponent } from './ramp.component';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ExamStepModule } from '../exam-step/exam-step.module';
+import { RankingModule } from '../ranking/ranking.module';
+import { RampRoutingModule } from './ramp-routing.module';
 
 
 @NgModule({
@@ -14,12 +15,13 @@ import { ExamStepModule } from '../exam-step/exam-step.module';
   imports: [
     CommonModule,
     SharedModule,
+    RampRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ExamStepModule
-  ],
+    RankingModule
+  ], 
   exports: [
-    RampComponent
+    SharedModule
   ]
 })
 export class RampModule { }

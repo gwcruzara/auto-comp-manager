@@ -12,7 +12,6 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { FooterComponent } from './features/footer/footer.component';
 
 @NgModule({
   providers: [
@@ -24,7 +23,6 @@ import { FooterComponent } from './features/footer/footer.component';
   declarations: [
     AppComponent,
     NavegationComponent,
-    FooterComponent,
   ],
   imports: [
     BrowserModule,

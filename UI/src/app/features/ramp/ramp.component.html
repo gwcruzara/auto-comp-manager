@@ -19,24 +19,21 @@
                     </div>
                 
                     <div class="custom-padding">     
-                        <strong>Ranking:</strong> {{getRank()}}                    
+                        <strong>Ranking:</strong> {{ getRank() }}                    
                     </div>
                     <div class="custom-padding">
-                        <strong>Nota:</strong> {{getScore()}}
+                        <strong>Nota:</strong> {{ getScore() }}
                     </div>
-                </div>
-
-   
+                </div>   
             </mat-card-content>
         
             <mat-card-actions class="mt-auto">
-                <button mat-stroked-button class="red-button">Salvar</button>
+                <button mat-stroked-button class="red-button" (click)="saveRamp()">Salvar</button>
             </mat-card-actions>
         </mat-card>
     </div>
 
     <div class="col-lg-6">
-        <app-exam-step></app-exam-step>
+        <app-ranking [title]="'Ranking de Rampa'" [rankingDto]="rankingDto"></app-ranking>
     </div>
 </div>
-

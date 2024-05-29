@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ExamStepComponent } from './exam-step.component';
+import { RankingComponent } from './ranking.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ExamStepComponent
-  },
-  {
-    path: ':id',
-    component: ExamStepComponent
+    component: RankingComponent
   }
 ];
 
@@ -17,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ExamStepRoutingModule { }
+export class RankingRoutingModule { }

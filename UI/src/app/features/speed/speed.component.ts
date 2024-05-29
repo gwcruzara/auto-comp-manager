@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Speed } from 'src/app/domain/speed/speed.models';
-import { PenaltiesService } from '../penalties/services/penalties.service';
 import { Subject, takeUntil } from 'rxjs';
-import { Penalties } from 'src/app/domain/penalties/penalties.model';
+import { SpeedService } from './services/speed.service';
+import { SpeedDto } from 'src/app/domain/speed/speed-dto.models';
+import { ActivatedRoute } from '@angular/router';
+import { RankingDto } from 'src/app/domain/ranking/ranking-dto.models';
 
 @Component({
   selector: 'app-speed',
@@ -12,60 +14,81 @@ import { Penalties } from 'src/app/domain/penalties/penalties.model';
 })
 export class SpeedComponent implements OnInit {
 
-  @Input() entity!: Speed;
-  @Input() id!: number;
-  @Input() speedForm!: FormGroup;
-
-  private destroy$ = new Subject();
-
-  private penaltiesService = inject(PenaltiesService);
-
-  public penalties: Penalties[] = [];
+  private readonly destroy$ : Subject<any> = new Subject();  
+  
+  private speedService = inject(SpeedService); 
+  private activedRoute = inject(ActivatedRoute); 
+    
+  speedForm: FormGroup = new FormGroup({});
+  
+  entity!: Speed;
+  speedDto!: SpeedDto;
+  rankingDto: RankingDto[] = [];
+  squadId!: number;  
 
   ngOnInit(): void {
-    this.createFormGroup();
-    this.applyValues();
+    this.squadId = this.activedRoute.snapshot.params["id"];
+    this.getSpeed();
+    this.getOverallRank();
+    this.createFormGroup();    
   }
 
-  getPenaltiesList() {
-    this.penaltiesService.getPenalties()
+  saveSpeed() {
+    this.speedService.saveSpeed(this.bodyBuilderSpeed())
     .pipe(takeUntil(this.destroy$))
       .subscribe(response => {
-        this.penalties = response;
+        this.applyValues(response);
+        this.getOverallRank();
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['entity'] && changes['entity'].currentValue) {
-      this.applyValues();      
-    }
+  getSpeed() {
+    this.speedService.getSpeed(this.squadId)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(response => {
+      if(response.id){
+        this.applyValues(response);        
+      }
+    });
   }
 
-  getScore() : string | undefined {
-    return this.entity !== null && this.entity?.score !== null ? this.entity?.score.toString() : 'Sem nota.'
+  getOverallRank() {
+    this.speedService.getRank()
+    .pipe(takeUntil(this.destroy$))
+      .subscribe(response => {
+          this.rankingDto = response;
+      });
   }
 
-  getRank() : string | undefined {
-    return this.entity !== null && this.entity?.ranking !== null ? this.entity?.ranking.toString() : 'Sem rank.'
+  getScore() : string {
+    return this.entity !== undefined && this.entity?.score !== undefined ? this.entity?.score.toString() : 'Sem nota.'
+  }
+
+  getRank() : string {
+    return this.entity !== undefined && this.entity?.ranking !== undefined ? `${this.entity?.ranking.toString()}°` : 'Sem rank.'
   }
   
-  applyValues() {
-    
-    if(!this.entity || !this.id) {
+  bodyBuilderSpeed(): SpeedDto {
+    return {...this.speedDto, ...this.speedForm.value} 
+  }
+  
+  applyValues(entity: Speed) {
+    this.entity = entity;
+    if(!this.entity || !this.squadId) {
         return;
     }
 
     this.speedForm.patchValue({
-      "idSquad": this.id,
-      "time": this.entity.time,
-      "burnedStart": this.entity.burnedStart,
-      "outsideLine": this.entity.outsideLine,
-      "cutWay": this.entity.cutWay,
+      "idSquad": this.squadId,
+      "time": entity.time,
+      "burnedStart": entity.burnedStart,
+      "outsideLine": entity.outsideLine,
+      "cutWay": entity.cutWay,
     });
   }
 
   private createFormGroup() {
-    this.speedForm.addControl("idSquad", new FormControl(this.id, []));
+    this.speedForm.addControl("idSquad", new FormControl(this.squadId, []));
     this.speedForm.addControl("time", new FormControl('', []));
     this.speedForm.addControl("burnedStart", new FormControl(false, []));
     this.speedForm.addControl("outsideLine", new FormControl(false, []));

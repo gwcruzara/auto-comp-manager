@@ -13,16 +13,23 @@
                 <div [formGroup]="rampForm" class="remove-overflow">
                     <div class="row m-1 mt-3">
                         <mat-form-field class="col-md-12" appearance="outline" >
-                            <mat-label>Distância Percorrida</mat-label>
+                            <mat-label>Distância Percorrida(m)</mat-label>
                             <input matInput formControlName="distance">
+                            <mat-icon matPrefix class="custon-prefix">toys</mat-icon>
                         </mat-form-field>
                     </div>
-                
-                    <div class="custom-padding">     
-                        <strong>Ranking:</strong> {{ getRank() }}                    
-                    </div>
-                    <div class="custom-padding">
-                        <strong>Nota:</strong> {{ getScore() }}
+            
+                    <div>
+                        <div class="row m-1">
+                            <h1>
+                                <strong>Regras</strong>
+                            </h1>
+                        </div>
+                        <div class="row m-1">
+                            <div class="col custom-font">
+                                <span>Quanto maior for a distância percorrida(m), melhor será sua posição no ranking.</span>
+                            </div>
+                        </div>
                     </div>
                 </div>   
             </mat-card-content>

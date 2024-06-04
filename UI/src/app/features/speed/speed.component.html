@@ -13,37 +13,118 @@
                 <div [formGroup]="speedForm" class="remove-overflow">
                     <div class="row m-1 mt-3">
                         <mat-form-field class="col" appearance="outline" >
-                            <mat-label>Tempo</mat-label>
+                            <mat-label>Tempo(s)</mat-label>
                             <input matInput formControlName="time">
+                            <mat-icon matPrefix class="custom-prefix">timer</mat-icon>
                         </mat-form-field>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="custom-padding">
-                                <strong>Ranking:</strong> {{ getRank() }}
-                            </div>
-                            <div class="custom-padding">
-                                <strong>Nota:</strong> {{ getScore() }}
+                    <div class="row m-1">
+                        <div class="col">
+                            <mat-form-field appearance="outline" class="text-center">
+                                <mat-label>Cortar Caminho</mat-label>
+                                <input 
+                                    type="number"
+                                    matInput
+                                    formControlName="cutWay"
+                                />
+                                <span matPrefix>
+                                    <button mat-icon-button (click)="changeQuantity(-1, 'cutWay')">
+                                        <mat-icon>remove</mat-icon>
+                                    </button>
+                                </span>
+                                <span matSuffix>
+                                    <button mat-icon-button (click)="changeQuantity(1, 'cutWay')">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </span>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col">
+                            <mat-form-field appearance="outline" class="text-center">
+                                <mat-label>Fora da Faixa</mat-label>
+                                <input 
+                                    type="number"
+                                    matInput
+                                    formControlName="outsideLine"
+                                />
+                                <span matPrefix>
+                                    <button mat-icon-button (click)="changeQuantity(-1, 'outsideLine')">
+                                        <mat-icon>remove</mat-icon>
+                                    </button>
+                                </span>
+                                <span matSuffix>
+                                    <button mat-icon-button (click)="changeQuantity(1, 'outsideLine')">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </span>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col mt-2">
+                            <mat-checkbox formControlName="burnedStart">Queima de Largada</mat-checkbox>                                                        
+                        </div>       
+                    </div>
+
+                    <div>
+                        <div class="row m-1">
+                            <h1>
+                                <strong>Penalidades Sofridas</strong>
+                            </h1>
+                        </div>
+                        <div class="row m-1">
+                            <div class="col custom-font">
+                                <span>Tempo original sem penalidades: </span> <strong> {{ getTimeWithoutPenalties() }}</strong> 
                             </div>
                         </div>
-                        <div class="col-lg-9">
-                            <section>
-                                <mat-checkbox class="col-md-4" formControlName="burnedStart">Queima de Largada</mat-checkbox>
-                                <mat-checkbox class="col-md-4" formControlName="cutWay">Cortar Caminho</mat-checkbox>
-                                <mat-checkbox class="col-md-4" formControlName="outsideLine">Fora da Faixa</mat-checkbox>
-                            </section>
-                        </div>                  
-                    </div>
-
-                    <div class="row">
-
+                        <div class="row m-1">
+                            <div class="col custom-font">
+                                <span>Quantidade de vezes que cortou caminho: </span> <strong> {{ getCutWayAmount() }}</strong> 
+                            </div>
+                        </div>
+                        <div class="row m-1">
+                            <div class="col custom-font">
+                                <span>Quantidade de vezes que foi para fora da faixa: </span>  <strong> {{ getOutsideLineAmount() }}</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>   
+
+                <br>
+
+                <div>
+                    <div class="row m-1">
+                        <h1>
+                            <strong>Tempo das punições (+)</strong>
+                        </h1>
+                    </div>
+                    <div class="row m-1" *ngFor="let legend of penalties">
+                        <div class="col custom-font">
+                            <span> {{ legend.Description}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="row m-1">
+                    <h1>
+                        <strong>Regras</strong>
+                    </h1>
+                </div>
+                <div class="row m-1">
+                    <div class="col custom-font">
+                        <span>Quanto menor for tempo, melhor será sua posição no ranking.</span>
+                    </div>
+                </div>
+
+
             </mat-card-content>
         
             <mat-card-actions class="mt-auto">
-                <button mat-stroked-button class="red-button" (click)="saveSpeed()">Salvar</button>
+                <button mat-stroked-button class="red-button me-2" (click)="saveSpeed()">Salvar</button>
+                <button mat-stroked-button class="red-button me-2" (click)="remove()">Resetar</button>
             </mat-card-actions>
         </mat-card>
     </div>

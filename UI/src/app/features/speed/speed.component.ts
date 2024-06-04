@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Speed } from 'src/app/domain/speed/speed.models';
 import { Subject, takeUntil } from 'rxjs';
 import { SpeedService } from './services/speed.service';
@@ -21,10 +21,22 @@ export class SpeedComponent implements OnInit {
     
   speedForm: FormGroup = new FormGroup({});
   
-  entity!: Speed;
+  entity: Speed | null = null;
   speedDto!: SpeedDto;
   rankingDto: RankingDto[] = [];
   squadId!: number;  
+
+  penalties = [
+    {
+      Description: 'Queima de Largada: 3(s)'
+    },
+    {
+      Description: 'Fora da Linha: 2(s)'
+    },
+    {
+      Description: 'Cortar Caminho: 5(s)'
+    }
+  ]
 
   ngOnInit(): void {
     this.squadId = this.activedRoute.snapshot.params["id"];
@@ -42,11 +54,38 @@ export class SpeedComponent implements OnInit {
       });
   }
 
+  remove() {
+    this.speedService.remove(this.squadId)
+    .pipe(takeUntil(this.destroy$))
+     .subscribe(response => {        
+        if (response === null) {
+          this.speedForm.reset({
+            "idSquad": this.squadId,
+            "time": 0,
+            "burnedStart": false,
+            "outsideLine": 0,
+            "cutWay": 0,
+          });
+
+          this.entity = null;
+
+          this.getOverallRank();
+        }
+    });
+  }
+
+  changeQuantity(num: number, formControl: string) {
+    const original = this.speedForm.get(formControl)?.value;
+    if (original + num >= 0) {
+      this.speedForm.get(formControl)?.setValue(original + num);
+    }
+  }
+
   getSpeed() {
     this.speedService.getSpeed(this.squadId)
     .pipe(takeUntil(this.destroy$))
     .subscribe(response => {
-      if(response.id){
+      if (response.id){
         this.applyValues(response);        
       }
     });
@@ -60,12 +99,17 @@ export class SpeedComponent implements OnInit {
       });
   }
 
-  getScore() : string {
-    return this.entity !== undefined && this.entity?.score !== undefined ? this.entity?.score.toString() : 'Sem nota.'
+  getTimeWithoutPenalties() {
+    return this.entity !== null && this.entity?.timeWithoutPenalties !== null ? `${this.entity?.timeWithoutPenalties.toString()}(s)` : 'Não existente.'
   }
 
-  getRank() : string {
-    return this.entity !== undefined && this.entity?.ranking !== undefined ? `${this.entity?.ranking.toString()}°` : 'Sem rank.'
+  getOutsideLineAmount() {
+    console.log(this.entity)
+    return this.entity !== null && this.entity?.outsideLine !== null ? `${this.entity?.outsideLine.toString()}x` : 'Não existente.'
+  }
+
+  getCutWayAmount() {
+    return this.entity !== null && this.entity?.cutWay !== null ? `${this.entity?.cutWay.toString()}x` : 'Não existente.'
   }
   
   bodyBuilderSpeed(): SpeedDto {
@@ -73,8 +117,10 @@ export class SpeedComponent implements OnInit {
   }
   
   applyValues(entity: Speed) {
+
     this.entity = entity;
-    if(!this.entity || !this.squadId) {
+
+    if(!this.entity || !this.squadId) {      
         return;
     }
 
@@ -82,16 +128,18 @@ export class SpeedComponent implements OnInit {
       "idSquad": this.squadId,
       "time": entity.time,
       "burnedStart": entity.burnedStart,
-      "outsideLine": entity.outsideLine,
-      "cutWay": entity.cutWay,
+      "outsideLine": 0,
+      "cutWay": 0
     });
+
+    entity.burnedStart ? this.speedForm.get('burnedStart')?.disable() : this.speedForm.get('burnedStart')?.enable();    
   }
 
   private createFormGroup() {
     this.speedForm.addControl("idSquad", new FormControl(this.squadId, []));
-    this.speedForm.addControl("time", new FormControl('', []));
+    this.speedForm.addControl("time", new FormControl(0, []));
     this.speedForm.addControl("burnedStart", new FormControl(false, []));
-    this.speedForm.addControl("outsideLine", new FormControl(false, []));
-    this.speedForm.addControl("cutWay", new FormControl(false, []));
+    this.speedForm.addControl("outsideLine", new FormControl(0, [Validators.min(0)]));
+    this.speedForm.addControl("cutWay", new FormControl(0, [Validators.min(0)]));
   }
 }

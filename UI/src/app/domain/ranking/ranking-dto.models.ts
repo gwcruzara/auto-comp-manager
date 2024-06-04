@@ -5,4 +5,7 @@ export class RankingDto extends BaseEntity {
     carNumber: string = '';
     ranking: number = 0;
     score: number = 0;
+    speedTime: number | null = null;
+    rampDistance: number | null = null;
+    tractionWeight: number | null = null;
 }

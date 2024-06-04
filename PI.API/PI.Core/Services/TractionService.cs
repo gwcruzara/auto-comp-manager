@@ -17,22 +17,15 @@ namespace PI.Core.Services
 
         public IQueryable<RankingDto> GetRanking()
         {
-            var rankList = _context.Tractions.AsNoTracking()
+            return _context.Tractions.AsNoTracking()
             .Select(traction => new RankingDto
             {
                 SquadName = traction.Squad.Name,
                 CarNumber = traction.Squad.CarNumber,
-                Score = GetRankScore(traction.Score)
-            }).ToList();
-
-            var scores = rankList.Select(traction => traction.Score).ToList();
-
-            foreach (var rank in rankList)
-            {
-                rank.Ranking = GetOverallRank(scores, rank.Score);
-            }
-
-            return rankList.AsQueryable().OrderBy(x => x.Ranking);
+                Score = traction.Score,
+                Ranking = traction.Ranking,
+                TractionWeight = traction.Weight
+            }).OrderBy(traction => traction.Ranking);
         }
 
         public Traction GetTraction(int squadId)
@@ -108,25 +101,6 @@ namespace PI.Core.Services
             }
 
             return 0.0;
-        }
-
-        private static double GetRankScore(double? score)
-        {
-            if (score.HasValue)
-            {
-                return score.Value;
-            }
-
-            return 0;
-        }
-
-        private int GetOverallRank(List<double> scores, double currentScore)
-        {
-            scores.Sort((a, b) => b.CompareTo(a));
-
-            int rank = scores.IndexOf(currentScore) + 1;
-
-            return rank;
         }
     }
 }

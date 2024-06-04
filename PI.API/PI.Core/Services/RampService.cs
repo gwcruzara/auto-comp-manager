@@ -16,22 +16,15 @@ namespace PI.Core.Services
 
         public IQueryable<RankingDto> GetRanking()
         {
-            var rankList = _context.Ramps.AsNoTracking()
+            return _context.Ramps.AsNoTracking()
             .Select(ramp => new RankingDto
             {
                 SquadName = ramp.Squad.Name,
                 CarNumber = ramp.Squad.CarNumber,
-                Score = GetRankScore(ramp.Score)
-            }).ToList();
-
-            var scores = rankList.Select(ramp => ramp.Score).ToList();
-
-            foreach (var rank in rankList)
-            {
-                rank.Ranking = GetOverallRank(scores, rank.Score);
-            }
-
-            return rankList.AsQueryable().OrderBy(x => x.Ranking);
+                Score = ramp.Score,
+                Ranking = ramp.Ranking,
+                RampDistance = ramp.Distance
+            }).OrderBy(ramp => ramp.Ranking);            
         }
 
         public Ramp GetRamp(int squadId)
@@ -108,25 +101,6 @@ namespace PI.Core.Services
             }
 
             return 0.0;
-        }
-
-        private static double GetRankScore(double? score)
-        {
-            if (score.HasValue)
-            {
-                return score.Value;
-            }
-
-            return 0;
-        }
-
-        private int GetOverallRank(List<double> scores, double currentScore)
-        {
-            scores.Sort((a, b) => b.CompareTo(a));
-
-            int rank = scores.IndexOf(currentScore) + 1;
-
-            return rank;
         }
     }
 }

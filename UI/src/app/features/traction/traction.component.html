@@ -13,16 +13,23 @@
                 <div [formGroup]="tractionForm" class="remove-overflow">
                     <div class="row m-1 mt-3">
                         <mat-form-field class="col-md-12" appearance="outline" >
-                            <mat-label>Peso</mat-label>
+                            <mat-label>Peso(gr)</mat-label>
                             <input matInput formControlName="weight">
+                            <mat-icon matPrefix class="custom-prefix">bolt</mat-icon>
                         </mat-form-field>
                     </div>
                 
-                    <div class="custom-padding">     
-                        <strong>Ranking:</strong> {{ getRank() }}                    
-                    </div>
-                    <div class="custom-padding">
-                        <strong>Nota:</strong> {{ getScore() }}
+                    <div>
+                        <div class="row m-1">
+                            <h1>
+                                <strong>Regras</strong>
+                            </h1>
+                        </div>
+                        <div class="row m-1">
+                            <div class="col custom-font">
+                                <span>Quanto maior for a peso carregado(gr), melhor será sua posição no ranking.</span>
+                            </div>
+                        </div>
                     </div>
                 </div>   
             </mat-card-content>

@@ -18,8 +18,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
 }
 
 :root {
-    --mdc-checkbox-disabled-selected-icon-color: white ;
-    --mdc-checkbox-disabled-unselected-icon-color: white ;
+    --mdc-checkbox-disabled-selected-icon-color: rgb(255, 0, 76);
+    --mdc-checkbox-disabled-unselected-icon-color: rgb(255, 0, 76);
 
     --mdc-checkbox-selected-checkmark-color: white ;
     --mdc-checkbox-selected-focus-icon-color: white ;
@@ -38,5 +38,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
     --mdc-checkbox-unselected-focus-state-layer-color: white ;
     --mdc-checkbox-unselected-hover-state-layer-color: white ;
     --mdc-checkbox-unselected-pressed-state-layer-color: white ;
-
   }

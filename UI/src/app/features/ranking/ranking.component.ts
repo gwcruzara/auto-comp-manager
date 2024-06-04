@@ -25,6 +25,18 @@ export class RankingComponent implements OnChanges, OnInit {
     }
   }
 
+  getRamp(distance: number | null) : string {    
+    return distance !== null ? `${distance}(m)` : 'Pendente'; 
+  }
+
+  getTraction(weight: number | null) : string {    
+    return weight !== null ? `${weight}(gr)` : 'Pendente'; 
+  }
+
+  getSpeed(time: number | null) : string {    
+    return time !== null ? `${time}(s)` : 'Pendente'; 
+  }
+
   ngOnInit(): void {
     if(this.title === '') {
         this.rankingService.getOverallRanking()

@@ -27,4 +27,8 @@ export class SpeedService {
   getRank(): Observable<RankingDto[]> {
     return this.http.get<RankingDto[]>(`${environment.apiEndpoint}${this.baseUrl}/GetRank`)
   }
+
+  remove(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiEndpoint}${this.baseUrl}/Delete/${id}`)
+  }
 }

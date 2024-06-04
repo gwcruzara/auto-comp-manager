@@ -7,5 +7,6 @@ namespace PI.Domain.Services
         Task<Speed> SaveSpeed(SpeedDto speed);        
         Speed GetSpeed(int squadId);
         IQueryable<RankingDto> GetRanking();
+        void Remove(int id);
     }
 }

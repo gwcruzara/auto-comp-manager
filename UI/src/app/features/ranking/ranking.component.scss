@@ -1,29 +1,40 @@
-.ramp-card {
-    width: 50%;
-    border-left: 4px solid rgb(211, 236, 68);
-    box-shadow: none;
-}
-
-.speed-card {
-    width: 50%;
-    border-left: 4px solid rgb(238, 188, 81);
-    box-shadow: none;
-}
-
-.traction-card {
-    width: 50%;
-    border-left: 4px solid rgb(71, 154, 223);
-    box-shadow: none;
-}
-
 .custom-card {
     border-width: 1px;
     box-shadow: none;
     border-color: rgb(155, 155, 155);
     background-color: transparent;
     color: white;
+    display: flex;
+    flex-direction: column;    
 }
 
 .red-button {
     background-color: rgb(255, 0, 76);
+}
+
+.full-height {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);
+}
+
+mat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 1000px;
+}
+
+mat-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;    
+    background-color: rgba(252, 5, 79, 0.445);
+    border-radius: 5px;
 }

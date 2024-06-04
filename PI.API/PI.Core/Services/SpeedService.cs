@@ -17,22 +17,15 @@ namespace PI.Core.Services
 
         public IQueryable<RankingDto> GetRanking()
         {
-            var rankList = _context.Speeds.AsNoTracking()
+            return _context.Speeds.AsNoTracking()
             .Select(speed => new RankingDto
             {
                 SquadName = speed.Squad.Name,
                 CarNumber = speed.Squad.CarNumber,
-                Score = GetRankScore(speed.Score)
-            }).ToList();
-
-            var scores = rankList.Select(speed => speed.Score).ToList();
-
-            foreach (var rank in rankList)
-            {
-                rank.Ranking = GetOverallRank(scores, rank.Score);
-            }
-
-            return rankList.AsQueryable().OrderBy(x => x.Ranking);
+                Score = speed.Score,
+                Ranking = speed.Ranking,
+                SpeedTime = speed.Time
+            }).OrderBy(speed => speed.Ranking);
         }
 
         public Speed GetSpeed(int squadId)
@@ -43,17 +36,37 @@ namespace PI.Core.Services
                 .FirstOrDefault() ?? throw new Exception("Speed not found");
         }
 
+        public void Remove(int id)
+        {
+            var speedToDelete = _context.Speeds.Where(x => x.IdSquad == id).FirstOrDefault();
+
+            if (speedToDelete is null)
+            {
+                throw new Exception("Speed not found.");
+            }
+
+            _context.Speeds.Remove(speedToDelete);
+
+            _context.SaveChanges();
+        }
+
         public async Task<Speed> SaveSpeed(SpeedDto speed)
         {
-            var squadSpeed = _context.Speeds.Where(x => x.IdSquad == speed.IdSquad).FirstOrDefault();
+            var squadSpeed = _context.Speeds
+                .Where(x => x.IdSquad == speed.IdSquad)
+                .FirstOrDefault();
 
-            var listOfspeeds = _context.Speeds.ToList();
+            var listOfSpeeds = _context.Speeds.ToList();
 
             Speed speedModifiedOrAdded;
 
             if (squadSpeed != null)
             {
-                squadSpeed.Time = GetTime(speed);              
+                squadSpeed.Time = GetTime(speed);
+                squadSpeed.BurnedStart = speed.BurnedStart;
+                squadSpeed.OutsideLine = squadSpeed.OutsideLine + speed.OutsideLine;
+                squadSpeed.CutWay = squadSpeed.CutWay + speed.CutWay;
+
                 speedModifiedOrAdded = squadSpeed;
             }
             else
@@ -61,22 +74,26 @@ namespace PI.Core.Services
                 var speedToSave = new Speed
                 {
                     IdSquad = speed.IdSquad,
-                    Time = GetTime(speed)
+                    Time = GetTime(speed),
+                    TimeWithoutPenalties = speed.Time,
+                    BurnedStart = speed.BurnedStart,
+                    OutsideLine = speed.OutsideLine,
+                    CutWay = speed.CutWay,
                 };
 
-                listOfspeeds.Add(speedToSave);
+                listOfSpeeds.Add(speedToSave);
                 speedModifiedOrAdded = speedToSave;
             }
 
-            listOfspeeds = listOfspeeds.OrderBy(r => r.Time).ToList();
+            listOfSpeeds = listOfSpeeds.OrderBy(r => r.Time).ToList();
 
-            for (int i = 0; i < listOfspeeds.Count; i++)
+            for (int i = 0; i < listOfSpeeds.Count; i++)
             {
-                listOfspeeds[i].Ranking = i + 1;
-                listOfspeeds[i].Score = GetScore(listOfspeeds[i].Ranking);
+                listOfSpeeds[i].Ranking = i + 1;
+                listOfSpeeds[i].Score = GetScore(listOfSpeeds[i].Ranking);
             }
 
-            await _context.BulkInsertOrUpdateAsync(listOfspeeds);
+            await _context.BulkInsertOrUpdateAsync(listOfSpeeds);
 
             return speedModifiedOrAdded;
         }
@@ -120,36 +137,17 @@ namespace PI.Core.Services
                 realTime = Math.Abs(realTime + 3.0);
             }
 
-            if (speed.CutWay)
+            if (speed.CutWay > 0)
             {
-                realTime = Math.Abs(realTime + 5.0);
+                realTime = Math.Abs(realTime + (5.0 * speed.CutWay));
             }
 
-            if (speed.OutsideLine)
+            if (speed.OutsideLine > 0)
             {
-                realTime = Math.Abs(realTime + 2.0);
+                realTime = Math.Abs(realTime + (2.0 * speed.OutsideLine));
             }
 
             return realTime;
-        }
-
-        private static double GetRankScore(double? speedScore)
-        {
-            if (speedScore.HasValue)
-            {
-                return speedScore.Value;
-            }
-
-            return 0;
-        }
-
-        private int GetOverallRank(List<double> scores, double currentScore)
-        {
-            scores.Sort((a, b) => b.CompareTo(a));
-
-            int rank = scores.IndexOf(currentScore) + 1;
-
-            return rank;
         }
     }
 }

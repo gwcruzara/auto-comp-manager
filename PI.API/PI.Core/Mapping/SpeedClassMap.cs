@@ -14,6 +14,9 @@ namespace PI.Core.Mapping
 
             builder.Property(x => x.Time)
                    .IsRequired();
+            
+            builder.Property(x => x.TimeWithoutPenalties)
+                   .IsRequired();
 
             builder.Property(x => x.Ranking)
                    .IsRequired();

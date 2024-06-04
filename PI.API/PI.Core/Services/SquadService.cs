@@ -27,6 +27,9 @@ namespace PI.Core.Services
                         SquadName = squad.Name,
                         CarNumber = squad.CarNumber,
                         Score = GetSquadScore(squad.Ramp.FirstOrDefault().Score, squad.Speed.FirstOrDefault().Score, squad.Traction.FirstOrDefault().Score),
+                        SpeedTime = squad.Speed.FirstOrDefault().Time != null ? squad.Speed.FirstOrDefault().Time : null,
+                        RampDistance = squad.Ramp.FirstOrDefault().Distance != null ? squad.Ramp.FirstOrDefault().Distance : null,
+                        TractionWeight = squad.Traction.FirstOrDefault().Weight != null ? squad.Traction.FirstOrDefault().Weight : null,
                     }).ToList();
 
             var squadScores = squadRankingList.Select(squad => squad.Score).ToList();

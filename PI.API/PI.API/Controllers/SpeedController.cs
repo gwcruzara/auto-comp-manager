@@ -35,5 +35,15 @@ namespace PI.API.Controllers
         {
             return _speedService.GetRanking();
         }
+
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public IActionResult  Remove(int id)
+        {
+            _speedService.Remove(id);
+
+            return Ok();
+        }
     }
 }

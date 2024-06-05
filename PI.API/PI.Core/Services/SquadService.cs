@@ -16,7 +16,10 @@ namespace PI.Core.Services
 
         public async Task<List<Squad>> GetSquadList()
         {            
-            return await _context.Squads.Include(x => x.Student).ToListAsync();
+            return await _context.Squads
+                .Include(x => x.Student)
+                .OrderBy(x => x.Name)
+                .ToListAsync();
         }
 
         public IQueryable<RankingDto> GetRankingList()
@@ -40,6 +43,29 @@ namespace PI.Core.Services
             }
 
             return squadRankingList.AsQueryable().OrderBy(x => x.Ranking);
+        }
+
+        public IQueryable<StudentRankingDto> GetStudentRanking()
+        {
+            var studentRanking = _context.Students.AsNoTracking()
+                    .Select(student => new StudentRankingDto
+                    {
+                        SquadName = student.Squad.Name,
+                        StudentName = student.Name,
+                        Score = GetSquadScore(student.Squad.Ramp.FirstOrDefault().Score, student.Squad.Speed.FirstOrDefault().Score, student.Squad.Traction.FirstOrDefault().Score),
+                        SpeedTime = student.Squad.Speed.FirstOrDefault().Time != null ? student.Squad.Speed.FirstOrDefault().Time : null,
+                        RampDistance = student.Squad.Ramp.FirstOrDefault().Distance != null ? student.Squad.Ramp.FirstOrDefault().Distance : null,
+                        TractionWeight = student.Squad.Traction.FirstOrDefault().Weight != null ? student.Squad.Traction.FirstOrDefault().Weight : null,
+                    }).ToList();
+
+            var studentScores = studentRanking.Select(student => student.Score).ToList();
+
+            foreach (var studentRank in studentRanking)
+            {
+                studentRank.Ranking = GetOverallRanking(studentScores, studentRank.Score);
+            }
+
+            return studentRanking.AsQueryable().OrderBy(x => x.Ranking);
         }
 
         private static double GetSquadScore(double? rampScore, double? speedScore, double? tractionScore)

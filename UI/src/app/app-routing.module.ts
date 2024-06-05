@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'ranking',
     loadChildren: () => import('./features/ranking/ranking.module').then((m) => m.RankingModule),
   },
+  {
+    path: 'ranking-student',
+    loadChildren: () => import('./features/ranking-student/ranking-student.module').then((m) => m.RankingStudentModule),
+  },
 ];
 
 @NgModule({

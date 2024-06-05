@@ -22,7 +22,7 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
   ],
   declarations: [
     AppComponent,
-    NavegationComponent,
+    NavegationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 <mat-card class="full-height custom-card">
     <mat-card-header>
         <mat-card-title>
-            {{ title }}
+            Ranking por aluno
         </mat-card-title>
     </mat-card-header>
 
@@ -14,7 +14,7 @@
                     <mat-icon *ngIf="rank.ranking === 3" matListItemIcon style="color: burlywood;">looks_3</mat-icon>
                     <mat-icon *ngIf="rank.ranking !== 1 && rank.ranking !== 2 && rank.ranking !== 3" matListItemIcon style="color: white">assignment_turned_in</mat-icon>
                     <span matListItemTitle style="color: white;" class="d-flex align-items-center">
-                        <span>{{ rank.ranking }}° - {{ rank.squadName }}</span>
+                        <span>{{ rank.ranking }}° - {{ rank.squadName }} | {{ rank.studentName }}</span>
                         <span style="margin-left: auto;">Nota Final: {{ rank.score | number:'1.1-1'}}</span>
                     </span>
                     <span matListItemLine style="color: white;" class="d-flex mt-3">

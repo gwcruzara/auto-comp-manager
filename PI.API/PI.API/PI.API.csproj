@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\SquadController.cs~RF33a19ed0.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EFCore.BulkExtensions" Version="6.0.9" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.10" />

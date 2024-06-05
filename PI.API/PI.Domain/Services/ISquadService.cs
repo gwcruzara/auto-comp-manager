@@ -6,5 +6,6 @@ namespace PI.Domain.Interfaces
     {
         Task<List<Squad>> GetSquadList();
         IQueryable<RankingDto> GetRankingList();
+        IQueryable<StudentRankingDto> GetStudentRanking();
     }
 }

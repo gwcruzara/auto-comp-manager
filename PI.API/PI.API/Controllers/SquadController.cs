@@ -28,5 +28,12 @@ namespace PI.API.Controllers
         {
             return _squadService.GetRankingList();
         }
+        
+        [HttpGet]
+        [Route("GetOverallStudentRanking")]
+        public IQueryable<StudentRankingDto> GetOverallStudentRanking()
+        {
+            return _squadService.GetStudentRanking();
+        }
     }
 }

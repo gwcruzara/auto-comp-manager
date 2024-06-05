@@ -1,23 +1,23 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { RankingDto } from 'src/app/domain/ranking/ranking-dto.models';
-import { RankingService } from './services/ranking.service';
 import { Subject, takeUntil } from 'rxjs';
+import { RankingStudentService } from './services/ranking-student.service';
+import { RankingStudentDto } from 'src/app/domain/ranking/ranking-student.dto.models';
 
 @Component({
-  selector: 'app-ranking',
-  templateUrl: './ranking.component.html',
-  styleUrls: ['./ranking.component.scss']
+  selector: 'app-ranking-student',
+  templateUrl: './ranking-student.component.html',
+  styleUrls: ['./ranking-student.component.scss']
 })
-export class RankingComponent implements OnChanges, OnInit {
+export class RankingStudentComponent implements OnChanges, OnInit {
 
   private readonly destroy$: Subject<any> = new Subject();
 
-  @Input() title: string = 'Ranking por equipe';
-  @Input() rankingDto: RankingDto[] = [];
+  @Input() title: string = '';
 
-  private rankingService = inject(RankingService);
+  private rankingService = inject(RankingStudentService);
 
-  ranking?: RankingDto[];
+  rankingDto: RankingStudentDto[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['rankingDto'] && !changes['rankingDto'].firstChange){
@@ -26,7 +26,7 @@ export class RankingComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    if(this.title === 'Ranking por equipe') {
+    if(this.title === '') {
         this.rankingService.getOverallRanking()
         .pipe(takeUntil(this.destroy$))
         .subscribe(response => {

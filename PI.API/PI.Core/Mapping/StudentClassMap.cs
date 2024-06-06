@@ -14,13 +14,14 @@ namespace PI.Core.Mapping
 
             builder.Property(x => x.Name)
                    .HasMaxLength(50)
-                   .IsRequired();
+                   .IsRequired(true);
 
             builder.Property(x => x.Job)
                    .HasMaxLength(50)
-                   .IsRequired();
+                   .IsRequired(false);
 
-            builder.Property(x => x.IdSquad);
+            builder.Property(x => x.IdSquad)
+                    .IsRequired(false);
 
             builder.HasOne(x => x.Squad)
                    .WithMany(x => x.Student)

@@ -17,6 +17,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
     height: 85vh;
 }
 
+:host ::ng-deep .mdc-button .mdc-button__label {
+    color: white !important;
+}
+
 :root {
     --mdc-checkbox-disabled-selected-icon-color: rgb(255, 0, 76);
     --mdc-checkbox-disabled-unselected-icon-color: rgb(255, 0, 76);

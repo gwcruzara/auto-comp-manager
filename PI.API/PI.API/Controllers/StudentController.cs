@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PI.Core.Services;
 using PI.Domain.Interfaces;
 using PI.Domain.Models;
 
@@ -20,6 +21,13 @@ namespace PI.API.Controllers
         public async Task<IList<Student>> GetStudents()
         {
             return await _studentService.GetStudents();
+        }
+
+        [HttpPost]
+        [Route("Create")]
+        public Student Create([FromBody] StudentDto student)
+        {
+            return _studentService.Create(student);
         }
     }
 }

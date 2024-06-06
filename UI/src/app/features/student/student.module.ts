@@ -1,25 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SquadRoutingModule } from './squad-routing.module';
-import { SquadComponent } from './squad.component';
+import { StudentRoutingModule } from './student-routing.module';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
-import { SquadFormComponent } from './components/squad-form/squad-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StudentFormComponent } from './student-form.component';
 
 
 @NgModule({
   declarations: [
-    SquadComponent,
-    SquadFormComponent
+    StudentFormComponent
   ],
   imports: [
     CommonModule,
-    SquadRoutingModule,
+    StudentRoutingModule,
     SharedModule,
     ReactiveFormsModule
-  ], 
-  exports: [
-    SharedModule
   ]
 })
-export class SquadModule { }
+export class StudentModule { }

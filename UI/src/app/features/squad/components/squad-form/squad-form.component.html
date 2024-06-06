@@ -1,0 +1,31 @@
+<div class="row mt-2 m-1">
+    <mat-card class="full-height custom-card">
+        <mat-card-header>
+            <mat-card-title>
+                Cadastrar equipe
+            </mat-card-title>
+        </mat-card-header>
+    
+        <mat-card-content>
+            <div [formGroup]="squadForm">
+                <div class="row mt-1">
+                    <mat-form-field class="col" appearance="outline" >
+                        <mat-label>Nome</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field class="col" appearance="outline" >
+                        <mat-label>Número do Carro</mat-label>
+                        <input matInput formControlName="carNumber">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    
+        <mat-card-actions class="mt-auto">
+            <button mat-stroked-button class="red-button me-2" (click)="create()">Salvar</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

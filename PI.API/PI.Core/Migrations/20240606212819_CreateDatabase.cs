@@ -4,7 +4,7 @@
 
 namespace PI.Core.Migrations
 {
-    public partial class InitalSqlLite : Migration
+    public partial class CreateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,10 +16,10 @@ namespace PI.Core.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    CarNumber = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,12 +31,12 @@ namespace PI.Core.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Distance = table.Column<double>(type: "REAL", nullable: false),
-                    Ranking = table.Column<int>(type: "INTEGER", nullable: false),
-                    Score = table.Column<double>(type: "REAL", nullable: false),
-                    IdSquad = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Distance = table.Column<double>(type: "float", nullable: false),
+                    Ranking = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<double>(type: "float", nullable: false),
+                    IdSquad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,16 +54,16 @@ namespace PI.Core.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Time = table.Column<double>(type: "REAL", nullable: false),
-                    TimeWithoutPenalties = table.Column<double>(type: "REAL", nullable: false),
-                    Ranking = table.Column<int>(type: "INTEGER", nullable: false),
-                    Score = table.Column<double>(type: "REAL", nullable: false),
-                    BurnedStart = table.Column<bool>(type: "INTEGER", nullable: false),
-                    OutsideLine = table.Column<int>(type: "INTEGER", nullable: false),
-                    CutWay = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdSquad = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Time = table.Column<double>(type: "float", nullable: false),
+                    TimeWithoutPenalties = table.Column<double>(type: "float", nullable: false),
+                    Ranking = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<double>(type: "float", nullable: false),
+                    BurnedStart = table.Column<bool>(type: "bit", nullable: false),
+                    OutsideLine = table.Column<int>(type: "int", nullable: false),
+                    CutWay = table.Column<int>(type: "int", nullable: false),
+                    IdSquad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,11 +82,11 @@ namespace PI.Core.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Job = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    IdSquad = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Job = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    IdSquad = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,8 +96,7 @@ namespace PI.Core.Migrations
                         column: x => x.IdSquad,
                         principalSchema: "dbo",
                         principalTable: "Squad",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -105,12 +104,12 @@ namespace PI.Core.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Weight = table.Column<double>(type: "REAL", nullable: false),
-                    Ranking = table.Column<int>(type: "INTEGER", nullable: false),
-                    Score = table.Column<double>(type: "REAL", nullable: false),
-                    IdSquad = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    Ranking = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<double>(type: "float", nullable: false),
+                    IdSquad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,34 +122,6 @@ namespace PI.Core.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Penalties",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    Time = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdSpeed = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Penalties", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Penalties_Speed_IdSpeed",
-                        column: x => x.IdSpeed,
-                        principalSchema: "dbo",
-                        principalTable: "Speed",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Penalties_IdSpeed",
-                schema: "dbo",
-                table: "Penalties",
-                column: "IdSpeed");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ramp_IdSquad",
@@ -180,11 +151,11 @@ namespace PI.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Penalties",
+                name: "Ramp",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Ramp",
+                name: "Speed",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -193,10 +164,6 @@ namespace PI.Core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Traction",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "Speed",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

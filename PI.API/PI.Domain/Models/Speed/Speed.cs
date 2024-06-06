@@ -11,6 +11,5 @@
         public int CutWay { get; set; }
         public int IdSquad { get; set; }
         public Squad Squad { get; set; }
-        public IList<Penalties> Penalties { get; set; }
     }
 }

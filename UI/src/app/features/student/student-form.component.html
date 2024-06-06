@@ -1,0 +1,42 @@
+<div class="row mt-2 m-1">
+    <mat-card class="full-height custom-card">
+        <mat-card-header>
+            <mat-card-title>
+                Cadastrar aluno
+            </mat-card-title>
+        </mat-card-header>
+    
+        <mat-card-content>
+            <div [formGroup]="studentForm">
+                <div class="row mt-1">
+                    <mat-form-field class="col" appearance="outline" >
+                        <mat-label>Nome</mat-label>
+                        <input matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field class="col" appearance="outline" >
+                        <mat-label>Função</mat-label>
+                        <input matInput formControlName="job">
+                    </mat-form-field>
+                </div>
+
+                <div class="row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Equipe</mat-label>
+                        <mat-select formControlName="idSquad">
+                          <mat-option *ngFor="let squad of squadsList" [value]="squad.id">
+                            {{ squad.name }}
+                            </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    
+        <mat-card-actions class="mt-auto">
+            <button mat-stroked-button class="red-button me-2" (click)="create()">Salvar</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

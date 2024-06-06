@@ -10,7 +10,6 @@ var configuration = builder.Configuration;
 
 // Add services to the container.
 
-
 builder.Services.AddSpaStaticFiles(directory =>
 {
     directory.RootPath = "UI";
@@ -22,9 +21,17 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
-var connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "app.db")}";
+//// To use in memory database
+////
+////var connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "app.db")}";
+////builder.Services.AddDbContext<AutoCompManagerContext>(options =>
+////    options.UseSqlite(connectionString));
+
+
+//// To use SQL Server local database
+////
 builder.Services.AddDbContext<AutoCompManagerContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseSqlServer(configuration.GetConnectionString("AutoCompManager")));
 
 
 builder.Services.AddScoped<IStudentService, StudentService>();
@@ -32,10 +39,6 @@ builder.Services.AddScoped<ISquadService, SquadService>();
 builder.Services.AddScoped<ISpeedService, SpeedService>();
 builder.Services.AddScoped<ITractionService, TractionService>();
 builder.Services.AddScoped<IRampService, RampService>();
-builder.Services.AddScoped<IPenaltiesService, PenaltiesService>();
-
-////builder.Services.AddHostedService<DatabaseHostedService>();
-
 
 var app = builder.Build();
 

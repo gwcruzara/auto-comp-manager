@@ -46,3 +46,7 @@
 :host ::ng-deep .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__leading{
     border-color: white !important;
 }
+
+:host ::ng-deep .mdc-button .mdc-button__label {
+    color: white !important;
+}

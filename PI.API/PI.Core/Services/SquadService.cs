@@ -77,6 +77,7 @@ namespace PI.Core.Services
             };
 
             _context.Squads.Add(createdSquad);
+            
             _context.SaveChanges();
 
             return createdSquad;

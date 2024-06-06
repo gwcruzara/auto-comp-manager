@@ -32,7 +32,6 @@ namespace PI.Core.Services
         {
             return _context.Speeds.AsNoTracking()
                 .Where(speed => speed.IdSquad == squadId)
-                .Include(speed => speed.Penalties)
                 .FirstOrDefault() ?? throw new Exception("Speed not found");
         }
 

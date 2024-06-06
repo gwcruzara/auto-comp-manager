@@ -27,3 +27,7 @@
 .red-button {
     background-color: rgb(255, 0, 76);
 }
+
+:host ::ng-deep .mdc-button .mdc-button__label {
+    color: white !important;
+}

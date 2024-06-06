@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'ranking-student',
     loadChildren: () => import('./features/ranking-student/ranking-student.module').then((m) => m.RankingStudentModule),
   },
+  {
+    path: 'student-form',
+    loadChildren: () => import('./features/student/student.module').then((m) => m.StudentModule),
+  },
 ];
 
 @NgModule({

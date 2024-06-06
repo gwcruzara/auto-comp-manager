@@ -17,16 +17,15 @@ builder.Services.AddSpaStaticFiles(directory =>
 });
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
+var connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "app.db")}";
 builder.Services.AddDbContext<AutoCompManagerContext>(options =>
-{
-    options.UseSqlServer(configuration.GetConnectionString("AutoCompManager"));
-});
+    options.UseSqlite(connectionString));
+
 
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ISquadService, SquadService>();
@@ -34,6 +33,9 @@ builder.Services.AddScoped<ISpeedService, SpeedService>();
 builder.Services.AddScoped<ITractionService, TractionService>();
 builder.Services.AddScoped<IRampService, RampService>();
 builder.Services.AddScoped<IPenaltiesService, PenaltiesService>();
+
+////builder.Services.AddHostedService<DatabaseHostedService>();
+
 
 var app = builder.Build();
 

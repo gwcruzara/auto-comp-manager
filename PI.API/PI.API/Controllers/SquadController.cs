@@ -35,5 +35,12 @@ namespace PI.API.Controllers
         {
             return _squadService.GetStudentRanking();
         }
+        
+        [HttpPost]
+        [Route("Create")]
+        public Squad Create([FromBody] SquadDto squad)
+        {
+            return _squadService.Create(squad);
+        }
     }
 }

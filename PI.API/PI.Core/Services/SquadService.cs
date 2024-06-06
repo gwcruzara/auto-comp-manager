@@ -68,6 +68,20 @@ namespace PI.Core.Services
             return studentRanking.AsQueryable().OrderBy(x => x.Ranking);
         }
 
+        public Squad Create(SquadDto squad)
+        {
+            var createdSquad = new Squad()
+            {
+                Name = squad.Name,
+                CarNumber = squad.CarNumber
+            };
+
+            _context.Squads.Add(createdSquad);
+            _context.SaveChanges();
+
+            return createdSquad;
+        }
+
         private static double GetSquadScore(double? rampScore, double? speedScore, double? tractionScore)
         {
             if (rampScore.HasValue && speedScore.HasValue && tractionScore.HasValue )

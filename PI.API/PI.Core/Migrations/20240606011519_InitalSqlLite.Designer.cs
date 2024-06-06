@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PI.Core.DataContext;
 
@@ -10,9 +11,10 @@ using PI.Core.DataContext;
 namespace PI.Core.Migrations
 {
     [DbContext(typeof(AutoCompManagerContext))]
-    partial class AutoCompManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20240606011519_InitalSqlLite")]
+    partial class InitalSqlLite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");

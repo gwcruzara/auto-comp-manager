@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SquadService } from '../../services/squad.service';
 import { SquadDto } from 'src/app/domain/squad/squad-dto.models';
 import { Subject, takeUntil } from 'rxjs';
@@ -40,7 +40,7 @@ export class SquadFormComponent implements OnInit{
   }
 
   private createFormGroup() {
-    this.squadForm.addControl("name", new FormControl('', []));
-    this.squadForm.addControl("carNumber", new FormControl('', []));
+    this.squadForm.addControl("name", new FormControl('', [Validators.required]));
+    this.squadForm.addControl("carNumber", new FormControl('', [Validators.required]));
   }
 }

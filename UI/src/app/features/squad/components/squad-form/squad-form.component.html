@@ -12,6 +12,9 @@
                     <mat-form-field class="col" appearance="outline" >
                         <mat-label>Nome</mat-label>
                         <input matInput formControlName="name">
+                        <mat-error *ngIf="squadForm.get('name')?.invalid">
+                            Nome é obrigatório
+                        </mat-error>
                     </mat-form-field>
                 </div>
 
@@ -19,6 +22,9 @@
                     <mat-form-field class="col" appearance="outline" >
                         <mat-label>Número do Carro</mat-label>
                         <input matInput formControlName="carNumber">
+                        <mat-error *ngIf="squadForm.get('carNumber')?.invalid">
+                            Número do carro é obrigatório
+                        </mat-error>
                     </mat-form-field>
                 </div>
             </div>
